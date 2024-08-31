@@ -1,5 +1,6 @@
 require("prototypes/animation/RCLProjectile.lua")
 
+table.insert(data.raw["technology"]["solar-energy"].effects, { type = "unlock-recipe", recipe = "BasicSolarPanel"})
 -- Highlight Resources --
 for _, ore in pairs(data.raw.resource) do
 	ore.highlight = true
