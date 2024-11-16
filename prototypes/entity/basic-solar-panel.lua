@@ -74,6 +74,7 @@ data:extend{bspI}
 bspR = {}
 bspR.type = "recipe"
 bspR.name = "BasicSolarPanel"
+bspR.enabled = false
 bspR.energy_required = 10
 bspR.ingredients =
     {
