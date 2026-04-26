@@ -24,7 +24,7 @@ function createMFSurface(MF)
 	-- F2: VoidTile has no autoplace expression so terrain generates as grass; fill manually
 	createTilesSurface(newSurface, -150, -150, 150, 150, "VoidTile")
 	-- Set tiles --
-	createTilesSurface(newSurface, -50, -50, 50, 50, "lab-dark-1")
+	createTilesSurface(newSurface, -50, -50, 50, 50, "tutorial-grid")
 	createTilesSurface(newSurface, -3, -4, 3, 4, "concrete")
 	createTilesSurface(newSurface, -1, -1, 1, 1, "refined-hazard-concrete-right")
 	-- Save variable --
@@ -61,7 +61,7 @@ function createControlRoom(MF)
 		-- F2: VoidTile has no autoplace expression so terrain generates as grass; fill manually
 		createTilesSurface(newSurface, -45, -45, 45, 45, "VoidTile")
 		-- Set tiles --
-		createTilesSurface(newSurface, -10, -10, 10, 10, "lab-dark-1")
+		createTilesSurface(newSurface, -10, -10, 10, 10, "tutorial-grid")
 		-- Set TP tiles --
 		createTilesSurface(newSurface, -3, 5, 3, 7, "refined-hazard-concrete-right")
 		-- Create Internal Power Cubes --

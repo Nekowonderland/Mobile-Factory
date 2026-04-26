@@ -1,5 +1,4 @@
 ------------------------ Control Center Extension ------------------------
--- F2: all "tutorial-grid" tile placements replaced with "lab-dark-1" (tutorial-grid removed from base game)
 
 -- Create tile Surface --
 function createTilesSurface(surface, x1, y1, x2, y2, tile)
@@ -16,19 +15,19 @@ end
 -- Left passage Extension --
 function createLeftPassage(surface)
 	if surface == nil then return end
-	createTilesSurface(surface, -90, -3, -10, 3, "lab-dark-1")
+	createTilesSurface(surface, -90, -3, -10, 3, "tutorial-grid")
 end
 
 -- Right passage Extension --
 function createRightPassage(surface)
 	if surface == nil then return end
-	createTilesSurface(surface, 10, -3, 90, 3, "lab-dark-1")
+	createTilesSurface(surface, 10, -3, 90, 3, "tutorial-grid")
 end
 
 -- Top passage Extension 1 --
 function createTopPassage1(surface)
 	if surface == nil then return end
-	createTilesSurface(surface, -10, -58, 10, -10, "lab-dark-1")
+	createTilesSurface(surface, -10, -58, 10, -10, "tutorial-grid")
 end
 
 -- Create Factory to Control Center floor --
