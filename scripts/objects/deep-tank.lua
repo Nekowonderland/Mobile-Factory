@@ -28,7 +28,7 @@ function DTK:new(object)
 	t.player = object.last_user.name
 	t.MF = getMFBySurface(object.surface)
 	t.entID = object.unit_number
-	t.ID = getEntID(global.deepTankTable)
+	t.ID = getEntID(storage.deepTankTable)
 	if t.MF and t.MF.dataNetwork then
 		t.MF.dataNetwork.DTKTable[object.unit_number] = t
 	end
@@ -238,14 +238,14 @@ end
 -- Check stored data, and remove invalid record
 function DTK:validate()
 	-- Remove the Fluid if it doesn't exist anymore --
-	if self.inventoryFluid ~= nil and game.fluid_prototypes[self.inventoryFluid] == nil then
+	if self.inventoryFluid ~= nil and prototypes.fluid[self.inventoryFluid] == nil then
 		self.inventoryFluid = nil
 		self.inventoryCount = 0
 		self.inventoryTemperature = 0
 	end
 
 	-- Remove the Fluid Filter if it doesn't exist anymore --
-	if self.filter ~= nil and game.fluid_prototypes[self.filter] == nil then
+	if self.filter ~= nil and prototypes.fluid[self.filter] == nil then
 		self.filter = nil
 	end
 end
@@ -256,11 +256,11 @@ function DTK.interaction(event)
 	if string.match(event.element.name, "D.T.Filter") then
 		-- Get the Deep Tank ID --
 		local id = event.element.tags.ID
-		if global.deepTankTable[id] == nil then return end
+		if storage.deepTankTable[id] == nil then return end
 		if event.element.elem_value ~= nil then
-			global.deepTankTable[id].filter = event.element.elem_value
+			storage.deepTankTable[id].filter = event.element.elem_value
 		else
-			global.deepTankTable[id].filter = nil
+			storage.deepTankTable[id].filter = nil
 		end
 		GUI.updateAllGUIs(true)
 		return
@@ -268,11 +268,11 @@ function DTK.interaction(event)
 	-- If this is a Max Textfield --
 	if string.match(event.element.name, "D.T.Max") then
 		local id = event.element.tags.ID
-		if global.deepTankTable[id] == nil then return end
+		if storage.deepTankTable[id] == nil then return end
 		if event.element.text ~= nil and event.element.text ~= "" and event.element.text ~= "0" then
-			global.deepTankTable[id].max = math.min(tonumber(event.element.text), _dtMaxFluid)
+			storage.deepTankTable[id].max = math.min(tonumber(event.element.text), _dtMaxFluid)
 		else
-			global.deepTankTable[id].max = _dtMaxFluid
+			storage.deepTankTable[id].max = _dtMaxFluid
 		end
 		GUI.updateAllGUIs(true)
 		return

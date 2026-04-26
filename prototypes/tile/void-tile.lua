@@ -3,7 +3,7 @@
 -- Tile --
 local vtT = table.deepcopy(data.raw.tile["out-of-map"])
 vtT.name = "VoidTile"
-vtT.autoplace = {default_enabled = false}
+vtT.autoplace = nil
 data:extend{vtT}
 
 -- Item --
@@ -15,11 +15,13 @@ vtI.icon_size = 128
 vtI.subgroup = "Tiles"
 vtI.order = "b"
 vtI.stack_size = 1000
+-- F2: condition uses CollisionMask format instead of string array
+-- vtI.place_as_tile = {result = "VoidTile", condition_size = 1, condition = {"water-tile"}}
 vtI.place_as_tile =
     {
       result = "VoidTile",
       condition_size = 1,
-      condition = { "water-tile" }
+      condition = {layers = {water_tile = true}}
     }
 data:extend{vtI}
 
@@ -31,9 +33,9 @@ vtR.energy_required = 1
 vtR.enabled = false
 vtR.ingredients =
     {
-		{"DimensionalOre", 4}
+		{type="item", name="DimensionalOre", amount=4}
     }
-vtR.result = "VoidTile"
+vtR.results = {{type="item", name="VoidTile", amount=1}}
 data:extend{vtR}
 
 -- Technology --

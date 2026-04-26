@@ -11,38 +11,35 @@ ocB.action_triggered_automatically = false
 ocB.width = 2
 ocB.direction_count = 1
 
-ocB.head =
+local ocBHeadAnim =
+{
+    filename = "__Mobile_Factory_Graphics__/graphics/Alpha.png",
+    width = 1,
+    height = 1,
+    line_length = 10,
+    frame_count = 10,
+    animation_speed = 1/15,
+    scale = 2
+}
+local ocBBodyAnim =
+{
+    filename = "__Mobile_Factory_Graphics__/graphics/beams/OCbeam.png",
+    width = 10,
+    height = 10,
+    line_length = 10,
+    frame_count = 10,
+    animation_speed = 1/15,
+    scale = 2
+}
+ocB.graphics_set =
+{
+    beam =
     {
-      filename = "__Mobile_Factory_Graphics__/graphics/Alpha.png",
-      width = 1,
-      height = 1,
-	  line_length = 10,
-      frame_count = 10,
-	  animation_speed = 1/15,
-	  scale = 2
+        head = ocBHeadAnim,
+        tail = ocBHeadAnim,
+        body = {ocBBodyAnim}
     }
-ocB.tail =
-    {
-      filename = "__Mobile_Factory_Graphics__/graphics/Alpha.png",
-      width = 1,
-      height = 1,
-	  line_length = 10,
-      frame_count = 10,
-	  animation_speed = 1/15,
-	  scale = 2
-    }
-ocB.body =
-    {
-      {
-      filename = "__Mobile_Factory_Graphics__/graphics/beams/OCbeam.png",
-      width = 10,
-      height = 10,
-	  line_length = 10,
-      frame_count = 10,
-	  animation_speed = 1/15,
-	  scale = 2
-      }
-    }
+}
 data:extend{ocB}
 
 
@@ -57,36 +54,33 @@ ocBB.action_triggered_automatically = false
 ocBB.width = 5
 ocBB.direction_count = 1
 
-ocBB.head =
+local ocBBHeadAnim =
+{
+    filename = "__Mobile_Factory_Graphics__/graphics/Alpha.png",
+    width = 1,
+    height = 1,
+    line_length = 16,
+    frame_count = 16,
+    animation_speed = 1,
+    scale = 2
+}
+local ocBBBodyAnim =
+{
+    filename = "__Mobile_Factory_Graphics__/graphics/beams/OCBigBeam.png",
+    width = 8,
+    height = 12,
+    line_length = 16,
+    frame_count = 16,
+    animation_speed = 1,
+    scale = 5
+}
+ocBB.graphics_set =
+{
+    beam =
     {
-      filename = "__Mobile_Factory_Graphics__/graphics/Alpha.png",
-      width = 1,
-      height = 1,
-	  line_length = 16,
-      frame_count = 16,
-	  animation_speed = 1,
-	  scale = 2
+        head = ocBBHeadAnim,
+        tail = ocBBHeadAnim,
+        body = {ocBBBodyAnim}
     }
-ocBB.tail =
-    {
-      filename = "__Mobile_Factory_Graphics__/graphics/Alpha.png",
-      width = 1,
-      height = 1,
-	  line_length = 16,
-      frame_count = 16,
-	  animation_speed = 1,
-	  scale = 2
-    }
-ocBB.body =
-    {
-      {
-      filename = "__Mobile_Factory_Graphics__/graphics/beams/OCBigBeam.png",
-      width = 8,
-      height = 12,
-	  line_length = 16,
-      frame_count = 16,
-	  animation_speed = 1,
-	  scale = 5
-      }
-    }
+}
 data:extend{ocBB}

@@ -42,7 +42,7 @@ end
 -- Destructor --
 function QC:remove()
 	-- Destroy the Sprite --
-	rendering.destroy(self.spriteID)
+	rendering_destroy(self.spriteID)
 	-- Remove from the Update System --
 	UpSys.removeObj(self)
 	-- Remove from the Data Network --
@@ -84,7 +84,7 @@ function QC:update()
 
 	-- Update the Sprite --
 	local spriteNumber = math.ceil(EI.energy(self)/EI.maxEnergy(self)*16)
-	rendering.destroy(self.spriteID)
+	rendering_destroy(self.spriteID)
 	self.spriteID = rendering.draw_sprite{sprite="CubeChargeSprite" .. spriteNumber, x_scale=1/7, y_scale=1/7, target=self.ent, surface=self.ent.surface, target_offset={0, -0.3}, render_layer=131}
 
 	-- Balance the Quatron with neighboring Quatron Users --

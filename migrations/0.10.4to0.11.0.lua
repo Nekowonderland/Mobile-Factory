@@ -1,10 +1,10 @@
-if global.allowMigration == false then return end
+if storage.allowMigration == false then return end
 -- Creating the Objects Table --
-global.objectsTable = {}
+storage.objectsTable = {}
 
 -- Creating the Resource Collectors Table --
-global.ResourceCollectorTable = {}
-for _, oc in pairs(global.oreCleanerTable or {}) do
+storage.ResourceCollectorTable = {}
+for _, oc in pairs(storage.oreCleanerTable or {}) do
     -- Check the Ore Cleaner --
     if oc.ent ~= nil and oc.ent.valid == true then
         -- Create the Resource Collector Table --
@@ -30,21 +30,21 @@ for _, oc in pairs(global.oreCleanerTable or {}) do
 	    oc.tank = oc.ent.surface.create_entity{name="ResourcesCollectorTank", position=oc.ent.position, force=oc.ent.force}
 
         -- Save the Resource Collector --
-        table.insert(global.ResourceCollectorTable, oc)
+        table.insert(storage.ResourceCollectorTable, oc)
         -- Remove the Ore Cleaner from the Entities Table --
-        global.entsTable[oc.entID] = nil
+        storage.entsTable[oc.entID] = nil
         -- Add the Resource Collector to the Object Table --
-        global.objectsTable[oc.entID] = oc
+        storage.objectsTable[oc.entID] = oc
     end
 end
 
 -- Removing the Ore Cleaners Table --
-global.oreCleanerTable = nil
+storage.oreCleanerTable = nil
 
 -- Telling peoples than the Fluid Extractor is removed --
-if table_size(global.fluidExtractorTable or {}) > 0 then
+if table_size(storage.fluidExtractorTable or {}) > 0 then
     game.print("The Fluid Extractor was removed and replaced by the Resources Collector")
 end
 
 -- Removing the Fluid Extractors Table --
-global.fluidExtractorTable = nil
+storage.fluidExtractorTable = nil

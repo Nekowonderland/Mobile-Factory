@@ -59,43 +59,37 @@ rctE.crafting_categories = {"crafting"}
 rctE.energy_source = {type="void"}
 rctE.animation = {filename="__Mobile_Factory_Graphics__/graphics/Alpha.png", size=1}
 rctE.idle_animation = {filename="__Mobile_Factory_Graphics__/graphics/Alpha.png", size=1}
-rctE.squeak_behaviour = false
+-- F2: British spelling removed; use American spelling
+-- rctE.squeak_behaviour = false
+rctE.squeak_behavior = false
 rctE.fluid_boxes = {
 	{
 		production_type = "output",
-		base_area = 100,
+		volume = 1000,
 		height = 1,
 		base_level = 10,
-		pipe_connections = {{ type="output", position = {-3.6, 0} }},
-		pipe_picture = assembler2pipepictures(),
-        pipe_covers = pipecoverspictures()
+		pipe_connections = {{ flow_direction="output", direction=defines.direction.west, position = {-2.5, 0} }},
 	},
 	{
 		production_type = "output",
-		base_area = 100,
+		volume = 1000,
 		height = 1,
 		base_level = 10,
-		pipe_connections = {{ type="output", position = {3.6, 0} }},
-		pipe_picture = assembler2pipepictures(),
-        pipe_covers = pipecoverspictures()
+		pipe_connections = {{ flow_direction="output", direction=defines.direction.east, position = {2.5, 0} }},
 	},
 	{
 		production_type = "output",
-		base_area = 100,
+		volume = 1000,
 		height = 1,
 		base_level = 10,
-		pipe_connections = {{ type="output", position = {-3.6, 1.90} }},
-		pipe_picture = assembler2pipepictures(),
-        pipe_covers = pipecoverspictures()
+		pipe_connections = {{ flow_direction="output", direction=defines.direction.west, position = {-2.5, 1.5} }},
 	},
 	{
 		production_type = "output",
-		base_area = 100,
+		volume = 1000,
 		height = 1,
 		base_level = 10,
-		pipe_connections = {{ type="output", position = {3.6, 1.90} }},
-		pipe_picture = assembler2pipepictures(),
-        pipe_covers = pipecoverspictures()
+		pipe_connections = {{ flow_direction="output", direction=defines.direction.east, position = {2.5, 1.5} }},
 	}
 
 }
@@ -104,7 +98,9 @@ data:extend{rctE}
 
 -- Item --
 local rcI = {}
-rcI.type = "item-with-tags"
+-- F2: "item-with-tags" merged into "item"
+-- rcI.type = "item-with-tags"
+rcI.type = "item"
 rcI.name = "ResourcesCollector"
 rcI.icon = "__Mobile_Factory_Graphics__/graphics/entity/ResourcesCollectorI.png"
 rcI.icon_size = 256
@@ -123,10 +119,10 @@ rcR.energy_required = 10
 rcR.enabled = false
 rcR.ingredients =
     {
-	  {"CrystalizedCircuit", 12},
-      {"MachineFrame3", 10}
+	  {type="item", name="CrystalizedCircuit", amount=12},
+      {type="item", name="MachineFrame3", amount=10}
     }
-rcR.result = "ResourcesCollector"
+rcR.results = {{type="item", name="ResourcesCollector", amount=1}}
 data:extend{rcR}
 
 -- Technology --

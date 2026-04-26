@@ -46,7 +46,7 @@ end
 
 -- Update all Mobile Factory Internal Lights --
 function updateIndoorLights()
-	for _, MF in pairs(global.MFTable) do
+	for _, MF in pairs(storage.MFTable) do
 		if EI.energy(MF.internalEnergyObj) > 0 then
 			MF.fS.daytime = 0
 			MF.ccS.daytime = 0
@@ -60,11 +60,11 @@ end
 -- Update all Resources Collectors --
 function updateAllRCL()
 	-- Check the Index --
-	if global.RCLUpdateIndex > table_size(global.ResourceCollectorTable) then global.RCLUpdateIndex = 1 end
+	if storage.RCLUpdateIndex > table_size(storage.ResourceCollectorTable) then storage.RCLUpdateIndex = 1 end
 	-- Get the next Resources Collector to update --
-	local rcl = global.ResourceCollectorTable[global.RCLUpdateIndex]
+	local rcl = storage.ResourceCollectorTable[storage.RCLUpdateIndex]
 	-- Increase the Index --
-	global.RCLUpdateIndex = global.RCLUpdateIndex + 1
+	storage.RCLUpdateIndex = storage.RCLUpdateIndex + 1
 	-- Check the Resouces Collector --
 	if rcl == nil then return end
 	-- Update if needed --

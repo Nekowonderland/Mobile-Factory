@@ -55,7 +55,7 @@ function NC:update()
 	self.lastUpdate = game.tick
 
     -- Create the Animation if Needed --
-    if self.animID == 0 or rendering.is_valid(self.animID) == false then
+    if self.animID == 0 or rendering_is_valid(self.animID) == false then
         self.animID = rendering.draw_animation{animation="NetworkControllerAn", target={self.ent.position.x,self.ent.position.y}, surface=self.ent.surface, render_layer=131}
 	end
 	

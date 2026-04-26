@@ -10,13 +10,11 @@ dpE1.maximum_wire_distance = 4
 dpE1.supply_area_distance = 1
 dpE1.flags = {}
 dpE1.fast_replaceable_group = nil
-dpE1.pictures.layers[1].hr_version.scale = 0.40
-dpE1.pictures.layers[1].hr_version.shift = {-0.15,-1}
-dpE1.pictures.layers[1].hr_version.tint = tint1
-dpE1.pictures.layers[1] = dpE1.pictures.layers[1].hr_version
-dpE1.pictures.layers[2].hr_version.scale = 0.40
-dpE1.pictures.layers[2].hr_version.shift = {1.35,0.1}
-dpE1.pictures.layers[2] = dpE1.pictures.layers[2].hr_version
+dpE1.pictures.layers[1].scale = 0.40
+dpE1.pictures.layers[1].shift = {-0.15,-1}
+dpE1.pictures.layers[1].tint = tint1
+dpE1.pictures.layers[2].scale = 0.40
+dpE1.pictures.layers[2].shift = {1.35,0.1}
 dpE1.connection_points =
     {
       {

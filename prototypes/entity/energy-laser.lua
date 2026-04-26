@@ -81,14 +81,10 @@ el1E.energy_source =
 el1E.energy_usage = "1J"
 el1E.fluid_boxes = {
     {
+        volume = 100,
         base_level = 1,
         pipe_connections = {
-            {
-                position = {
-                    0,
-                    -1
-                }
-            }
+            {flow_direction="output", direction=defines.direction.north, position={0, 0}}
         },
         production_type = "output",
     }
@@ -115,10 +111,10 @@ el1R.energy_required = 5
 el1R.enabled = false
 el1R.ingredients =
 {
-    {"MachineFrame2", 15},
-    {"DimensionalCircuit", 3}
+    {type="item", name="MachineFrame2", amount=15},
+    {type="item", name="DimensionalCircuit", amount=3}
 }
-el1R.result = "EnergyLaser1"
+el1R.results = {{type="item", name="EnergyLaser1", amount=1}}
 data:extend{el1R}
 
 ---------------------- ENERGY LASER 2 ----------------------
@@ -206,10 +202,10 @@ el2R.energy_required = 5
 el2R.enabled = false
 el2R.ingredients =
 {
-    {"MachineFrame3", 8},
-    {"CrystalizedCircuit", 2}
+    {type="item", name="MachineFrame3", amount=8},
+    {type="item", name="CrystalizedCircuit", amount=2}
 }
-el2R.result = "EnergyLaser2"
+el2R.results = {{type="item", name="EnergyLaser2", amount=1}}
 data:extend{el2R}
 
 
@@ -298,10 +294,10 @@ el3R.energy_required = 5
 el3R.enabled = false
 el3R.ingredients =
 {
-    {"MachineFrame3", 8},
-    {"EnergyCore", 1}
+    {type="item", name="MachineFrame3", amount=8},
+    {type="item", name="EnergyCore", amount=1}
 }
-el3R.result = "EnergyLaser3"
+el3R.results = {{type="item", name="EnergyLaser3", amount=1}}
 data:extend{el3R}
 
 
@@ -388,14 +384,10 @@ ql1E.energy_source =
 ql1E.energy_usage = "1J"
 ql1E.fluid_boxes = {
     {
+        volume = 100,
         base_level = 1,
         pipe_connections = {
-            {
-                position = {
-                    0,
-                    -1
-                }
-            }
+            {flow_direction="output", direction=defines.direction.north, position={0, 0}}
         },
         production_type = "output",
     }
@@ -422,10 +414,10 @@ ql1R.energy_required = 5
 ql1R.enabled = false
 ql1R.ingredients =
 {
-    {"MachineFrame2", 15},
-    {"DimensionalCircuit", 3}
+    {type="item", name="MachineFrame2", amount=15},
+    {type="item", name="DimensionalCircuit", amount=3}
 }
-ql1R.result = "QuatronLaser1"
+ql1R.results = {{type="item", name="QuatronLaser1", amount=1}}
 data:extend{ql1R}
 
 
@@ -514,10 +506,10 @@ ql2R.energy_required = 5
 ql2R.enabled = false
 ql2R.ingredients =
 {
-    {"MachineFrame3", 8},
-    {"CrystalizedCircuit", 2}
+    {type="item", name="MachineFrame3", amount=8},
+    {type="item", name="CrystalizedCircuit", amount=2}
 }
-ql2R.result = "QuatronLaser2"
+ql2R.results = {{type="item", name="QuatronLaser2", amount=1}}
 data:extend{ql2R}
 
 
@@ -606,8 +598,8 @@ ql3R.energy_required = 5
 ql3R.enabled = false
 ql3R.ingredients =
 {
-    {"MachineFrame3", 8},
-    {"EnergyCore", 1}
+    {type="item", name="MachineFrame3", amount=8},
+    {type="item", name="EnergyCore", amount=1}
 }
-ql3R.result = "QuatronLaser3"
+ql3R.results = {{type="item", name="QuatronLaser3", amount=1}}
 data:extend{ql3R}

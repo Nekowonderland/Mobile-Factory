@@ -10,7 +10,7 @@ iddleBeam.damage_interval = 20
 iddleBeam.random_target_offset = true
 iddleBeam.action_triggered_automatically = false
 iddleBeam.action = nil
-iddleBeam.head =
+local iddleBeamAnim =
 {
     filename = "__Mobile_Factory_Graphics__/graphics/beams/IddleBeam.png",
     flags = beam_non_light_flags,
@@ -22,23 +22,27 @@ iddleBeam.head =
     animation_speed = 0.025,
     blend_mode = laser_beam_blend_mode
 }
-iddleBeam.tail = iddleBeam.head
-iddleBeam.body = iddleBeam.head
-iddleBeam.light_animations =
+local iddleBeamLight =
 {
-    head =
+    filename = "__Mobile_Factory_Graphics__/graphics/beams/IddleBeamLight.png",
+    draw_as_light = true,
+    flags = {"light"},
+    line_length = 2,
+    width = 30,
+    height = 30,
+    scale = 1.0,
+    animation_speed = 0.025,
+    frame_count = 2
+}
+iddleBeam.graphics_set =
+{
+    beam =
     {
-        filename = "__Mobile_Factory_Graphics__/graphics/beams/IddleBeamLight.png",
-        line_length = 2,
-        width = 30,
-        height = 30,
-        scale = 1.0,
-        animation_speed = 0.025,
-        frame_count = 2
+        head = {layers = {iddleBeamAnim, iddleBeamLight}},
+        tail = {layers = {iddleBeamAnim, iddleBeamLight}},
+        body = {{layers = {iddleBeamAnim, iddleBeamLight}}}
     }
 }
-iddleBeam.light_animations.tail = iddleBeam.light_animations.head
-iddleBeam.light_animations.body = iddleBeam.light_animations.head
 data:extend{iddleBeam}
 
 
@@ -50,11 +54,11 @@ mk1ConnectedBeam.type = "beam"
 mk1ConnectedBeam.name = "MK1ConnectedBeam"
 mk1ConnectedBeam.flags = {"not-on-map"}
 mk1ConnectedBeam.width = 1
-mk1ConnectedBeam.damage_interval = 20   
+mk1ConnectedBeam.damage_interval = 20
 mk1ConnectedBeam.random_target_offset = true
 mk1ConnectedBeam.action_triggered_automatically = false
 mk1ConnectedBeam.action = nil
-mk1ConnectedBeam.head =
+local mk1ConnAnim =
 {
     filename = "__Mobile_Factory_Graphics__/graphics/beams/MK1ConnectedBeam.png",
     flags = beam_non_light_flags,
@@ -66,23 +70,27 @@ mk1ConnectedBeam.head =
     animation_speed = 0.025,
     blend_mode = laser_beam_blend_mode
 }
-mk1ConnectedBeam.tail = mk1ConnectedBeam.head
-mk1ConnectedBeam.body = mk1ConnectedBeam.head
-mk1ConnectedBeam.light_animations =
+local mk1ConnLight =
 {
-    head =
+    filename = "__Mobile_Factory_Graphics__/graphics/beams/MK1ConnectedBeamLight.png",
+    draw_as_light = true,
+    flags = {"light"},
+    line_length = 2,
+    width = 90,
+    height = 90,
+    scale = 1/2.7,
+    animation_speed = 0.025,
+    frame_count = 2
+}
+mk1ConnectedBeam.graphics_set =
+{
+    beam =
     {
-        filename = "__Mobile_Factory_Graphics__/graphics/beams/MK1ConnectedBeamLight.png",
-        line_length = 2,
-        width = 90,
-        height = 90,
-        scale = 1/2.7,
-        animation_speed = 0.025,
-        frame_count = 2
+        head = {layers = {mk1ConnAnim, mk1ConnLight}},
+        tail = {layers = {mk1ConnAnim, mk1ConnLight}},
+        body = {{layers = {mk1ConnAnim, mk1ConnLight}}}
     }
 }
-mk1ConnectedBeam.light_animations.tail = mk1ConnectedBeam.light_animations.head
-mk1ConnectedBeam.light_animations.body = mk1ConnectedBeam.light_animations.head
 data:extend{mk1ConnectedBeam}
 
 -- Send Beam --
@@ -95,7 +103,7 @@ mk1SendBeam.damage_interval = 20
 mk1SendBeam.random_target_offset = true
 mk1SendBeam.action_triggered_automatically = false
 mk1SendBeam.action = nil
-mk1SendBeam.head =
+local mk1SendAnim =
 {
     filename = "__Mobile_Factory_Graphics__/graphics/beams/MK1SendBeam.png",
     flags = beam_non_light_flags,
@@ -107,67 +115,28 @@ mk1SendBeam.head =
     animation_speed = 0.4,
     blend_mode = laser_beam_blend_mode
 }
-mk1SendBeam.tail = mk1SendBeam.head
-mk1SendBeam.body = mk1SendBeam.head
-mk1SendBeam.light_animations =
+local mk1SendLight =
 {
-    head =
+    filename = "__Mobile_Factory_Graphics__/graphics/beams/MK1SendBeamLight.png",
+    draw_as_light = true,
+    flags = {"light"},
+    line_length = 4,
+    width = 90,
+    height = 90,
+    scale = 1/2.7,
+    animation_speed = 0.4,
+    frame_count = 4
+}
+mk1SendBeam.graphics_set =
+{
+    beam =
     {
-        filename = "__Mobile_Factory_Graphics__/graphics/beams/MK1SendBeamLight.png",
-        line_length = 4,
-        width = 90,
-        height = 90,
-        scale = 1/2.7,
-        animation_speed = 0.4,
-        frame_count = 4
+        head = {layers = {mk1SendAnim, mk1SendLight}},
+        tail = {layers = {mk1SendAnim, mk1SendLight}},
+        body = {{layers = {mk1SendAnim, mk1SendLight}}}
     }
 }
-mk1SendBeam.light_animations.tail = mk1SendBeam.light_animations.head
-mk1SendBeam.light_animations.body = mk1SendBeam.light_animations.head
 data:extend{mk1SendBeam}
-
------------------ ENERGY LASER BEAM -----------------
-
--- General Iddle Beam --
-local iddleBeam = {}
-iddleBeam.type = "beam"
-iddleBeam.name = "IddleBeam"
-iddleBeam.flags = {"not-on-map"}
-iddleBeam.width = 1
-iddleBeam.damage_interval = 20
-iddleBeam.random_target_offset = true
-iddleBeam.action_triggered_automatically = false
-iddleBeam.action = nil
-iddleBeam.head =
-{
-    filename = "__Mobile_Factory_Graphics__/graphics/beams/IddleBeam.png",
-    flags = beam_non_light_flags,
-    line_length = 2,
-    width = 30,
-    height = 30,
-    frame_count = 2,
-    scale = 1.0,
-    animation_speed = 0.025,
-    blend_mode = laser_beam_blend_mode
-}
-iddleBeam.tail = iddleBeam.head
-iddleBeam.body = iddleBeam.head
-iddleBeam.light_animations =
-{
-    head =
-    {
-        filename = "__Mobile_Factory_Graphics__/graphics/beams/IddleBeamLight.png",
-        line_length = 2,
-        width = 30,
-        height = 30,
-        scale = 1.0,
-        animation_speed = 0.025,
-        frame_count = 2
-    }
-}
-iddleBeam.light_animations.tail = iddleBeam.light_animations.head
-iddleBeam.light_animations.body = iddleBeam.light_animations.head
-data:extend{iddleBeam}
 
 
 -- Quatron Laser MK1 --
@@ -178,11 +147,11 @@ mk1QuatronConnectedBeam.type = "beam"
 mk1QuatronConnectedBeam.name = "MK1QuatronConnectedBeam"
 mk1QuatronConnectedBeam.flags = {"not-on-map"}
 mk1QuatronConnectedBeam.width = 1
-mk1QuatronConnectedBeam.damage_interval = 20   
+mk1QuatronConnectedBeam.damage_interval = 20
 mk1QuatronConnectedBeam.random_target_offset = true
 mk1QuatronConnectedBeam.action_triggered_automatically = false
 mk1QuatronConnectedBeam.action = nil
-mk1QuatronConnectedBeam.head =
+local mk1QConnAnim =
 {
     filename = "__Mobile_Factory_Graphics__/graphics/beams/MK1QuatronConnectedBeam.png",
     flags = beam_non_light_flags,
@@ -194,23 +163,27 @@ mk1QuatronConnectedBeam.head =
     animation_speed = 0.025,
     blend_mode = laser_beam_blend_mode
 }
-mk1QuatronConnectedBeam.tail = mk1QuatronConnectedBeam.head
-mk1QuatronConnectedBeam.body = mk1QuatronConnectedBeam.head
-mk1QuatronConnectedBeam.light_animations =
+local mk1QConnLight =
 {
-    head =
+    filename = "__Mobile_Factory_Graphics__/graphics/beams/MK1ConnectedBeamLight.png",
+    draw_as_light = true,
+    flags = {"light"},
+    line_length = 2,
+    width = 90,
+    height = 90,
+    scale = 1/2.7,
+    animation_speed = 0.025,
+    frame_count = 2
+}
+mk1QuatronConnectedBeam.graphics_set =
+{
+    beam =
     {
-        filename = "__Mobile_Factory_Graphics__/graphics/beams/MK1ConnectedBeamLight.png",
-        line_length = 2,
-        width = 90,
-        height = 90,
-        scale = 1/2.7,
-        animation_speed = 0.025,
-        frame_count = 2
+        head = {layers = {mk1QConnAnim, mk1QConnLight}},
+        tail = {layers = {mk1QConnAnim, mk1QConnLight}},
+        body = {{layers = {mk1QConnAnim, mk1QConnLight}}}
     }
 }
-mk1QuatronConnectedBeam.light_animations.tail = mk1QuatronConnectedBeam.light_animations.head
-mk1QuatronConnectedBeam.light_animations.body = mk1QuatronConnectedBeam.light_animations.head
 data:extend{mk1QuatronConnectedBeam}
 
 -- Send Beam --
@@ -223,7 +196,7 @@ mk1QuatronSendBeam.damage_interval = 20
 mk1QuatronSendBeam.random_target_offset = true
 mk1QuatronSendBeam.action_triggered_automatically = false
 mk1QuatronSendBeam.action = nil
-mk1QuatronSendBeam.head =
+local mk1QSendAnim =
 {
     filename = "__Mobile_Factory_Graphics__/graphics/beams/MK1QuatronSendBeam.png",
     flags = beam_non_light_flags,
@@ -235,21 +208,25 @@ mk1QuatronSendBeam.head =
     animation_speed = 0.4,
     blend_mode = laser_beam_blend_mode
 }
-mk1QuatronSendBeam.tail = mk1QuatronSendBeam.head
-mk1QuatronSendBeam.body = mk1QuatronSendBeam.head
-mk1QuatronSendBeam.light_animations =
+local mk1QSendLight =
 {
-    head =
+    filename = "__Mobile_Factory_Graphics__/graphics/beams/MK1SendBeamLight.png",
+    draw_as_light = true,
+    flags = {"light"},
+    line_length = 4,
+    width = 90,
+    height = 90,
+    scale = 1/2.7,
+    animation_speed = 0.4,
+    frame_count = 4
+}
+mk1QuatronSendBeam.graphics_set =
+{
+    beam =
     {
-        filename = "__Mobile_Factory_Graphics__/graphics/beams/MK1SendBeamLight.png",
-        line_length = 4,
-        width = 90,
-        height = 90,
-        scale = 1/2.7,
-        animation_speed = 0.4,
-        frame_count = 4
+        head = {layers = {mk1QSendAnim, mk1QSendLight}},
+        tail = {layers = {mk1QSendAnim, mk1QSendLight}},
+        body = {{layers = {mk1QSendAnim, mk1QSendLight}}}
     }
 }
-mk1QuatronSendBeam.light_animations.tail = mk1QuatronSendBeam.light_animations.head
-mk1QuatronSendBeam.light_animations.body = mk1QuatronSendBeam.light_animations.head
 data:extend{mk1QuatronSendBeam}

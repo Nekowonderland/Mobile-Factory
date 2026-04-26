@@ -45,7 +45,7 @@ end
 function teleportPlayerOutside(player)
 	-- Find the Mobile Factory --
 	local MF = nil
-	for _, mf in pairs(global.MFTable) do
+	for _, mf in pairs(storage.MFTable) do
 		if mf.fS ~= nil and mf.fS.valid == true and mf.fS.name == player.surface.name then
 			MF = mf
 		end
@@ -100,7 +100,7 @@ end
 function teleportPlayerToDriverSeat(player)
 -- Find the Mobile Factory --
 	local MF = nil
-	for _, mf in pairs(global.MFTable) do
+	for _, mf in pairs(storage.MFTable) do
 		if mf.fS ~= nil and mf.fS.valid == true and mf.fS.name == player.surface.name then
 			MF = mf
 		end

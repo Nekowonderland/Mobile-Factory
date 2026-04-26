@@ -25,8 +25,8 @@ ec1E.energy_source =
   type = "electric",
   buffer_capacity = "2MJ",
   usage_priority = "tertiary",
-  input_flow_limit = "200KW",
-  output_flow_limit = "200KW",
+  input_flow_limit = "200kW",
+  output_flow_limit = "200kW",
   render_no_power_icon = false,
   render_no_network_icon = false
 }
@@ -73,7 +73,9 @@ data:extend{ec1E}
 
 -- Item --
 local ec1I = {}
-ec1I.type = "item-with-tags"
+-- F2: "item-with-tags" merged into "item"
+-- ec1I.type = "item-with-tags"
+ec1I.type = "item"
 ec1I.name = "EnergyCubeMK1"
 ec1I.place_result = "EnergyCubeMK1"
 ec1I.icon = "__Mobile_Factory_Graphics__/graphics/energy/EnergyCubeMK1I.png"
@@ -91,10 +93,10 @@ ec1R.energy_required = 5
 ec1R.enabled = false
 ec1R.ingredients =
 {
-    {"DimensionalCircuit", 25},
-    {"MachineFrame2", 4}
+    {type="item", name="DimensionalCircuit", amount=25},
+    {type="item", name="MachineFrame2", amount=4}
 }
-ec1R.result = "EnergyCubeMK1"
+ec1R.results = {{type="item", name="EnergyCubeMK1", amount=1}}
 data:extend{ec1R}
 
 ---------------------------------- Energy Cube MK2 ----------------------------------
@@ -107,8 +109,8 @@ ec2E.energy_source =
   type = "electric",
   buffer_capacity = "15MJ",
   usage_priority = "tertiary",
-  input_flow_limit = "1500KW",
-  output_flow_limit = "1500KW",
+  input_flow_limit = "1500kW",
+  output_flow_limit = "1500kW",
   render_no_power_icon = false,
   render_no_network_icon = false
 }
@@ -147,7 +149,9 @@ data:extend{ec2E}
 
 -- Item --
 local ec2I = {}
-ec2I.type = "item-with-tags"
+-- F2: "item-with-tags" merged into "item"
+-- ec2I.type = "item-with-tags"
+ec2I.type = "item"
 ec2I.name = "EnergyCubeMK2"
 ec2I.place_result = "EnergyCubeMK2"
 ec2I.icon = "__Mobile_Factory_Graphics__/graphics/energy/EnergyCubeMK2I.png"
@@ -165,10 +169,10 @@ ec2R.energy_required = 10
 ec2R.enabled = false
 ec2R.ingredients =
 {
-    {"CrystalizedCircuit", 4},
-    {"MachineFrame3", 4}
+    {type="item", name="CrystalizedCircuit", amount=4},
+    {type="item", name="MachineFrame3", amount=4}
 }
-ec2R.result = "EnergyCubeMK2"
+ec2R.results = {{type="item", name="EnergyCubeMK2", amount=1}}
 data:extend{ec2R}
 
 ---------------------------------- Energy Cube MK3 ----------------------------------
@@ -221,7 +225,9 @@ data:extend{ec3E}
 
 -- Item --
 local ec3I = {}
-ec3I.type = "item-with-tags"
+-- F2: "item-with-tags" merged into "item"
+-- ec3I.type = "item-with-tags"
+ec3I.type = "item"
 ec3I.name = "EnergyCubeMK3"
 ec3I.place_result = "EnergyCubeMK3"
 ec3I.icon = "__Mobile_Factory_Graphics__/graphics/energy/EnergyCubeMK3I.png"
@@ -239,10 +245,10 @@ ec3R.energy_required = 10
 ec3R.enabled = false
 ec3R.ingredients =
 {
-    {"EnergyCore", 1},
-    {"MachineFrame3", 4}
+    {type="item", name="EnergyCore", amount=1},
+    {type="item", name="MachineFrame3", amount=4}
 }
-ec3R.result = "EnergyCubeMK3"
+ec3R.results = {{type="item", name="EnergyCubeMK3", amount=1}}
 data:extend{ec3R}
 
 
@@ -271,7 +277,7 @@ qc1E.default_output_signal = {type = "virtual", name = "signal-Q"}
 qc1E.energy_source =
 {
   type = "electric",
-  buffer_capacity = "2KJ",
+  buffer_capacity = "2kJ",
   usage_priority = "tertiary",
   input_flow_limit = "0J",
   output_flow_limit = "0J",
@@ -323,7 +329,9 @@ data:extend{qc1E}
 
 -- Item --
 local qc1I = {}
-qc1I.type = "item-with-tags"
+-- F2: "item-with-tags" merged into "item"
+-- qc1I.type = "item-with-tags"
+qc1I.type = "item"
 qc1I.name = "QuatronCubeMK1"
 qc1I.place_result = "QuatronCubeMK1"
 qc1I.icon = "__Mobile_Factory_Graphics__/graphics/energy/QuatronCubeMK1I.png"
@@ -341,10 +349,10 @@ qc1R.energy_required = 5
 qc1R.enabled = false
 qc1R.ingredients =
 {
-    {"DimensionalCircuit", 25},
-    {"MachineFrame2", 4}
+    {type="item", name="DimensionalCircuit", amount=25},
+    {type="item", name="MachineFrame2", amount=4}
 }
-qc1R.result = "QuatronCubeMK1"
+qc1R.results = {{type="item", name="QuatronCubeMK1", amount=1}}
 data:extend{qc1R}
 
 
@@ -358,7 +366,7 @@ qc2E.minable = {mining_time = 0.5, result = "QuatronCubeMK2"}
 qc2E.energy_source =
 {
   type = "electric",
-  buffer_capacity = "15KJ",
+  buffer_capacity = "15kJ",
   usage_priority = "tertiary",
   input_flow_limit = "0J",
   output_flow_limit = "0J",
@@ -400,7 +408,9 @@ data:extend{qc2E}
 
 -- Item --
 local qc2I = {}
-qc2I.type = "item-with-tags"
+-- F2: "item-with-tags" merged into "item"
+-- qc2I.type = "item-with-tags"
+qc2I.type = "item"
 qc2I.name = "QuatronCubeMK2"
 qc2I.place_result = "QuatronCubeMK2"
 qc2I.icon = "__Mobile_Factory_Graphics__/graphics/energy/QuatronCubeMK2I.png"
@@ -418,10 +428,10 @@ qc2R.energy_required = 5
 qc2R.enabled = false
 qc2R.ingredients =
 {
-  {"CrystalizedCircuit", 4},
-  {"MachineFrame3", 4}
+  {type="item", name="CrystalizedCircuit", amount=4},
+  {type="item", name="MachineFrame3", amount=4}
 }
-qc2R.result = "QuatronCubeMK2"
+qc2R.results = {{type="item", name="QuatronCubeMK2", amount=1}}
 data:extend{qc2R}
 
 
@@ -435,7 +445,7 @@ qc3E.minable = {mining_time = 0.5, result = "QuatronCubeMK3"}
 qc3E.energy_source =
 {
   type = "electric",
-  buffer_capacity = "50KJ",
+  buffer_capacity = "50kJ",
   usage_priority = "tertiary",
   input_flow_limit = "0J",
   output_flow_limit = "0J",
@@ -477,7 +487,9 @@ data:extend{qc3E}
 
 -- Item --
 local qc3I = {}
-qc3I.type = "item-with-tags"
+-- F2: "item-with-tags" merged into "item"
+-- qc3I.type = "item-with-tags"
+qc3I.type = "item"
 qc3I.name = "QuatronCubeMK3"
 qc3I.place_result = "QuatronCubeMK3"
 qc3I.icon = "__Mobile_Factory_Graphics__/graphics/energy/QuatronCubeMK3I.png"
@@ -495,10 +507,10 @@ qc3R.energy_required = 5
 qc3R.enabled = false
 qc3R.ingredients =
 {
-  {"EnergyCore", 1},
-  {"MachineFrame3", 4}
+  {type="item", name="EnergyCore", amount=1},
+  {type="item", name="MachineFrame3", amount=4}
 }
-qc3R.result = "QuatronCubeMK3"
+qc3R.results = {{type="item", name="QuatronCubeMK3", amount=1}}
 data:extend{qc3R}
 
 
@@ -576,11 +588,11 @@ iecR.energy_required = 15
 iecR.enabled = false
 iecR.ingredients =
 {
-    {"EnergyCubeMK1", 4},
-    {"DimensionalCircuit", 15},
-    {"MachineFrame2", 10}
+    {type="item", name="EnergyCubeMK1", amount=4},
+    {type="item", name="DimensionalCircuit", amount=15},
+    {type="item", name="MachineFrame2", amount=10}
 }
-iecR.result = "InternalEnergyCube"
+iecR.results = {{type="item", name="InternalEnergyCube", amount=1}}
 data:extend{iecR}
 
 ---------------------------------- Internal Quatron Cube ----------------------------------
@@ -649,11 +661,11 @@ iqcR.energy_required = 15
 iqcR.enabled = false
 iqcR.ingredients =
 {
-    {"QuatronCubeMK1", 4},
-    {"DimensionalCircuit", 15},
-    {"MachineFrame2", 10}
+    {type="item", name="QuatronCubeMK1", amount=4},
+    {type="item", name="DimensionalCircuit", amount=15},
+    {type="item", name="MachineFrame2", amount=10}
 }
-iqcR.result = "InternalQuatronCube"
+iqcR.results = {{type="item", name="InternalQuatronCube", amount=1}}
 data:extend{iqcR}
 
 

@@ -67,7 +67,7 @@ function MF:new(args)
 	t.deployedEnts = t.deployedEnts or {}
 
 	if player then
-		global.MFTable[player.name] = t
+		storage.MFTable[player.name] = t
 		t.playerIndex = player.index
 		t.player = player.name
 		t.name = player.name .. "'s Mobile Factory"
@@ -101,7 +101,7 @@ function MF:construct(object)
 	self.ent = object
 	if self.fS == nil or self.fS.valid == false then self.fS = nil createMFSurface(self) end
 	if self.ccS == nil or self.ccS.valid == false then self.ccS = nil createControlRoom(self) end
-	global.entsTable[object.unit_number] = self
+	storage.entsTable[object.unit_number] = self
 	self.lastSurface = object.surface
 	self.lastPosX = object.position.x
 	self.lastPosY = object.position.y
@@ -203,9 +203,9 @@ function MF:getTooltipInfos(GUITable, mainFrame, justCreated)
 					i = i + 1
 					local itemText = {"", " (", {"gui-description.Empty"}, " - ", deepTank.player, ")"}
 					if deepTank.filter ~= nil then
-						itemText = {"", " (", game.fluid_prototypes[deepTank.filter].localised_name, " - ", deepTank.player, ")"}
+						itemText = {"", " (", prototypes.fluid[deepTank.filter].localised_name, " - ", deepTank.player, ")"}
 					elseif deepTank.inventoryFluid ~= nil then
-						itemText = {"", " (", game.fluid_prototypes[deepTank.inventoryFluid].localised_name, " - ", deepTank.player, ")"}
+						itemText = {"", " (", prototypes.fluid[deepTank.inventoryFluid].localised_name, " - ", deepTank.player, ")"}
 					end
 					invs[k+1] = {"", {"gui-description.DT"}, " ", tostring(deepTank.ID), itemText}
 					if self.selectedInv and self.selectedInv.entID == deepTank.entID then
@@ -461,7 +461,7 @@ end
 
 function MF:updateQuatronLaser(entity)
 	-- Get the Object --
-	local obj = global.entsTable[entity.unit_number]
+	local obj = storage.entsTable[entity.unit_number]
 	if obj == nil or obj.ent == nil or obj.ent.valid == false then return end
 	----------------------- Drain Quatron -------------------------
 	if self.selectedQuatronLaserMode == "input" and self.internalQuatronObj.ent ~= nil and self.internalQuatronObj.ent.valid == true and EI.energy(obj) > 0 then
@@ -499,7 +499,7 @@ end
 -------------------------------------------- Energy Laser --------------------------------------------
 function MF:updateEnergyLaser(entity)
 	-- Get the Object --
-	local obj = global.entsTable[entity.unit_number]
+	local obj = storage.entsTable[entity.unit_number]
 	if obj == nil or obj.ent == nil or obj.ent.valid == false then return end
 	----------------------- Drain Energy -------------------------
 	if self.selectedEnergyLaserMode == "input" and self.internalEnergyObj.ent ~= nil and self.internalEnergyObj.ent.valid == true and entity.energy > 0 then
@@ -768,7 +768,7 @@ function MF:TPMobileFactoryPart1(location)
 	-- Get the Player --
 	local player = getPlayer(self.playerIndex)
 	-- Check if the Surface Exist --
-	if location.surface == nil or game.surfaces[location.surface.name] == nil then
+	if location.surface == nil or game.get_surface(location.surface.name) == nil then
 		player.print({"", {"gui-description.TPSurfaceNoFound"}})
 		return
 	end
@@ -817,7 +817,7 @@ function MF:TPMobileFactoryPart2()
 	-- Get the Player --
 	local player = getPlayer(self.playerIndex)
 	-- Check if the Surface Exist --
-	if self.tpLocation.surface == nil or game.surfaces[self.tpLocation.surface.name] == nil then
+	if self.tpLocation.surface == nil or game.get_surface(self.tpLocation.surface.name) == nil then
 		player.print({"", {"gui-description.TPSurfaceNoFound"}})
 		-- Stop the TP --
 		self.onTP = false
@@ -866,8 +866,8 @@ end
 -- Remove the Sync Area --
 -- function MF:removeSyncArea()
 -- 	if self.syncAreaScanned == false then return end
--- 	rendering.destroy(self.syncAreaID)
--- 	rendering.destroy(self.syncAreaInsideID)
+-- 	rendering_destroy(self.syncAreaID)
+-- 	rendering_destroy(self.syncAreaInsideID)
 -- 	self.syncAreaID = 0
 -- 	self.syncAreaInsideID = 0
 -- 	self.syncAreaScanned = false
@@ -1158,8 +1158,8 @@ end
 
 -- Send Quatron from cloned Accu2 --
 -- local function uncloneQuatron(accu1, accu2)
--- 	local obj1 = global.entsTable[accu1.unit_number]
--- 	local obj2 = global.entsTable[accu2.unit_number]
+-- 	local obj1 = storage.entsTable[accu1.unit_number]
+-- 	local obj2 = storage.entsTable[accu2.unit_number]
 -- 	-- Calcul the total quatron --
 -- 	local effectiveCharge = obj1.quatronCharge * math.pow(obj1.quatronLevel, _mfQuatronScalePower) + obj2.quatronCharge * math.pow(obj2.quatronLevel, _mfQuatronScalePower)
 -- 	local totalCharge = obj1.quatronCharge + obj2.quatronCharge
@@ -1315,13 +1315,13 @@ end
 function MF:validate()
 	-- Jump Drive location icons
 	for _, loc in pairs(self.jumpDriveObj.locationTable or {}) do
-		if loc.filter ~= nil and game.recipe_prototypes[loc.filter] == nil then
+		if loc.filter ~= nil and prototypes.recipe[loc.filter] == nil then
 			loc.filter = nil
 		end
 	end
 	-- Internal Inventory items
 	for item, _ in pairs(self.II.inventory) do
-		if game.item_prototypes[item] == nil then
+		if prototypes.item[item] == nil then
 			self.II.inventory[item] = nil
 		end
 	end
@@ -1333,7 +1333,7 @@ function MF.interaction(event, player, MFPlayer)
 	if string.match(event.element.name, "M.F.OpenInvButton") then
 		-- Get the Object --
 		local objId = event.element.tags.ID
-		local ent = global.MFTable[objId].ent
+		local ent = storage.MFTable[objId].ent
 		if ent ~= nil and ent.valid == true then
 			player.opened = ent
 		end

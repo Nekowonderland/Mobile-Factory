@@ -25,14 +25,14 @@ qrE.energy_source =
 }
 qrE.fluid_box =
 {
-    base_area = 100,
+    volume = 1000,
     height = 1,
     base_level = -1,
     production_type = "input",
     pipe_connections =
     {
-        {position={-2.2,0.5}},
-        {position={2.2,0.5}}
+        {flow_direction="input", direction=defines.direction.west, position={-1.5, 0}},
+        {flow_direction="input", direction=defines.direction.east, position={1.5, 0}}
     }
 }
 qrE.horizontal_animation =
@@ -102,10 +102,10 @@ ec1R.energy_required = 5
 ec1R.enabled = false
 ec1R.ingredients =
 {
-    {"DimensionalCircuit", 60},
-    {"MachineFrame2", 30}
+    {type="item", name="DimensionalCircuit", amount=60},
+    {type="item", name="MachineFrame2", amount=30}
 }
-ec1R.result = "QuatronReactor"
+ec1R.results = {{type="item", name="QuatronReactor", amount=1}}
 data:extend{ec1R}
 
 -- Create all Sprites --

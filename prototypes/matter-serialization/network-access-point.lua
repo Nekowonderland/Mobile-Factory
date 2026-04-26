@@ -80,10 +80,10 @@ napR.energy_required = 6
 napR.enabled = false
 napR.ingredients =
     {
-      {"CrystalizedCircuit", 18},
-      {"MachineFrame3", 6}
+      {type="item", name="CrystalizedCircuit", amount=18},
+      {type="item", name="MachineFrame3", amount=6}
     }
-    napR.result = "NetworkAccessPoint"
+    napR.results = {{type="item", name="NetworkAccessPoint", amount=1}}
 data:extend{napR}
 
 -- Animation --

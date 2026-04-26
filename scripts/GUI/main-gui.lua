@@ -141,8 +141,8 @@ function GUI.updateMFMainGUI(GUITable)
 
 	if MF.ent ~= nil and MF.ent.valid == true then
 		mfPositionText = {"", {"gui-description.mfPosition"}, ": [color=yellow](", math.floor(MF.ent.position.x), " ; ", math.floor(MF.ent.position.y), ")  ", MF.ent.surface.name, "[/color]"}
-		mfHealthValue = MF.ent.health / MF.ent.prototype.max_health
-		mfHealthText = {"", {"gui-description.mfHealth"}, ": ", math.floor(MF.ent.health), "/", MF.ent.prototype.max_health}
+		mfHealthValue = MF.ent.health / MF.ent.max_health
+		mfHealthText = {"", {"gui-description.mfHealth"}, ": ", math.floor(MF.ent.health), "/", MF.ent.max_health}
 		mfShielValue = 0
 		mfShieldText = {"", {"gui-description.mfShield"}, ": ", 0}
 		if MF:maxShield() > 0 then

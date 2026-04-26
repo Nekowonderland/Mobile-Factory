@@ -70,10 +70,10 @@ neR.energy_required = 4
 neR.enabled = false
 neR.ingredients =
     {
-      {"CrystalizedCircuit", 16},
-      {"MachineFrame3", 6}
+      {type="item", name="CrystalizedCircuit", amount=16},
+      {type="item", name="MachineFrame3", amount=6}
     }
-    neR.result = "NetworkExplorer"
+    neR.results = {{type="item", name="NetworkExplorer", amount=1}}
 data:extend{neR}
 
 -- Technologie --

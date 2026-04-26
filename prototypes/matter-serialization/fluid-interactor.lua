@@ -11,16 +11,16 @@ fiE.fast_replaceable_group = nil
 fiE.next_upgrade = nil
 fiE.fluid_box =
 {
-    base_area = 100,
+    volume = 1000,
     height = 1,
     base_level = 0,
     pipe_covers = nil,
     pipe_connections =
     {
-        {position={-2,0}},
-        {position={2,0}},
-        {position={0,-2}},
-        {position={0,2}}
+        {flow_direction="input-output", direction=defines.direction.west,  position={-1, 0}},
+        {flow_direction="input-output", direction=defines.direction.east,  position={ 1, 0}},
+        {flow_direction="input-output", direction=defines.direction.north, position={ 0,-1}},
+        {flow_direction="input-output", direction=defines.direction.south, position={ 0, 1}}
     }
 }
 fiE.pictures.picture =
@@ -69,10 +69,10 @@ fiR.energy_required = 4
 fiR.enabled = false
 fiR.ingredients =
     {
-      {"CrystalizedCircuit", 13},
-      {"MachineFrame3", 4}
+      {type="item", name="CrystalizedCircuit", amount=13},
+      {type="item", name="MachineFrame3", amount=4}
     }
-fiR.result = "FluidInteractor"
+fiR.results = {{type="item", name="FluidInteractor", amount=1}}
 data:extend{fiR}
 
 -- Create all Sprites --

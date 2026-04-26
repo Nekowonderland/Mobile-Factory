@@ -8,9 +8,11 @@ mf.equipment_grid = "MFEquipmentGrid"
 mf.minable = {mining_time = 1.5, result = "MobileFactory"}
 mf.inventory_size = 10
 mf.max_health = 2500
-mf.collision_mask = {"player-layer", "train-layer", "consider-tile-transitions", "layer-52", "not-colliding-with-itself"}
-mf.emissions_per_second = 0.005
-mf.consumption = "700KW"
+-- F2: old format removed "layer-52" (Space Exploration specific, no F2 equivalent)
+-- mf.collision_mask = {"player-layer", "train-layer", "consider-tile-transitions", "layer-52", "not-colliding-with-itself"}
+mf.collision_mask = {layers = {player = true, train = true}, consider_tile_transitions = true, not_colliding_with_itself = true}
+mf.emissions_per_second = {pollution = 0.005}
+mf.consumption = "700kW"
 mf.weight = 25000
 mf.braking_power = "600kW"
 mf.rotation_speed = 0.30 / 60
@@ -56,22 +58,22 @@ mf.animation =
 			stripes =
 			{
 				{
-				filename = "__base__/graphics/entity/tank/hr-tank-base-1.png",
+				filename = "__base__/graphics/entity/tank/tank-base-1.png",
 				width_in_frames = 2,
 				height_in_frames = 16
 				},
 				{
-				filename = "__base__/graphics/entity/tank/hr-tank-base-2.png",
+				filename = "__base__/graphics/entity/tank/tank-base-2.png",
 				width_in_frames = 2,
 				height_in_frames = 16
 				},
 				{
-				filename = "__base__/graphics/entity/tank/hr-tank-base-3.png",
+				filename = "__base__/graphics/entity/tank/tank-base-3.png",
 				width_in_frames = 2,
 				height_in_frames = 16
 				},
 				{
-				filename = "__base__/graphics/entity/tank/hr-tank-base-4.png",
+				filename = "__base__/graphics/entity/tank/tank-base-4.png",
 				width_in_frames = 2,
 				height_in_frames = 16
 				}
@@ -89,17 +91,17 @@ mf.animation =
 		stripes = util.multiplystripes(2,
 		{
 		  {
-			filename = "__base__/graphics/entity/tank/hr-tank-base-mask-1.png",
+			filename = "__base__/graphics/entity/tank/tank-base-mask-1.png",
 			width_in_frames = 1,
 			height_in_frames = 22
 		  },
 		  {
-			filename = "__base__/graphics/entity/tank/hr-tank-base-mask-2.png",
+			filename = "__base__/graphics/entity/tank/tank-base-mask-2.png",
 			width_in_frames = 1,
 			height_in_frames = 22
 		  },
 		  {
-			filename = "__base__/graphics/entity/tank/hr-tank-base-mask-3.png",
+			filename = "__base__/graphics/entity/tank/tank-base-mask-3.png",
 			width_in_frames = 1,
 			height_in_frames = 20
 		  }
@@ -118,22 +120,22 @@ mf.animation =
 			stripes = util.multiplystripes(2,
 			{
 			 {
-			  filename = "__base__/graphics/entity/tank/hr-tank-base-shadow-1.png",
+			  filename = "__base__/graphics/entity/tank/tank-base-shadow-1.png",
 			  width_in_frames = 1,
 			  height_in_frames = 16
 			 },
 			 {
-			  filename = "__base__/graphics/entity/tank/hr-tank-base-shadow-2.png",
+			  filename = "__base__/graphics/entity/tank/tank-base-shadow-2.png",
 			  width_in_frames = 1,
 			  height_in_frames = 16
 			 },
 			 {
-			  filename = "__base__/graphics/entity/tank/hr-tank-base-shadow-3.png",
+			  filename = "__base__/graphics/entity/tank/tank-base-shadow-3.png",
 			  width_in_frames = 1,
 			  height_in_frames = 16
 			 },
 			 {
-			  filename = "__base__/graphics/entity/tank/hr-tank-base-shadow-4.png",
+			  filename = "__base__/graphics/entity/tank/tank-base-shadow-4.png",
 			  width_in_frames = 1,
 			  height_in_frames = 16
 			 }
@@ -147,7 +149,7 @@ mf.turret_animation =
 	layers =
 	{
 		{
-			filename = "__base__/graphics/entity/tank/hr-tank-turret.png",
+			filename = "__base__/graphics/entity/tank/tank-turret.png",
 			priority = "low",
 			line_length = 8,
 			width = 179,
@@ -159,7 +161,7 @@ mf.turret_animation =
 			scale = 1
 		},
 		{
-			filename = "__base__/graphics/entity/tank/hr-tank-turret-mask.png",
+			filename = "__base__/graphics/entity/tank/tank-turret-mask.png",
             priority = "low",
             line_length = 8,
             width = 72,
@@ -170,7 +172,7 @@ mf.turret_animation =
             scale = 1
 		},
 		{
-			filename = "__base__/graphics/entity/tank/hr-tank-turret-shadow.png",
+			filename = "__base__/graphics/entity/tank/tank-turret-shadow.png",
             priority = "low",
             line_length = 8,
             width = 193,
@@ -187,7 +189,9 @@ data:extend{mf}
 
 -- Create Mobile Factory Item --
 local mfI = {}
-mfI.type = "item-with-entity-data"
+-- F2: "item-with-entity-data" merged into "item" (place_result carries entity data automatically)
+-- mfI.type = "item-with-entity-data"
+mfI.type = "item"
 mfI.name = "MobileFactory"
 mfI.icon = "__Mobile_Factory_Graphics__/graphics/mobile-factory/tank.png"
 mfI.icon_size = 256
@@ -205,10 +209,10 @@ mfR.enabled = false
 mfR.energy_required = 10
 mfR.ingredients =
     {
-      {"DimensionalCircuit", 25},
-      {"MachineFrame2", 6}
+      {type="item", name="DimensionalCircuit", amount=25},
+      {type="item", name="MachineFrame2", amount=6}
     }
-mfR.result = "MobileFactory"
+mfR.results = {{type="item", name="MobileFactory", amount=1}}
 data:extend{mfR}
 
 -- Create the Mobile Factory Technology --
@@ -252,7 +256,9 @@ function createNewMF(name, color, size, order, icon)
 	nMFE.selection_box = {{-2*size, -3.5*size}, {1.6*size, 2.5*size}}
 	data:extend{nMFE}
 	
-	local nMFI = table.deepcopy(data.raw["item-with-entity-data"].MobileFactory)
+	-- F2: "item-with-entity-data" merged into "item"
+	-- local nMFI = table.deepcopy(data.raw["item-with-entity-data"].MobileFactory)
+	local nMFI = table.deepcopy(data.raw.item.MobileFactory)
 	nMFI.name = name
 	nMFI.order = order
 	nMFI.icon = icon
@@ -261,7 +267,8 @@ function createNewMF(name, color, size, order, icon)
 	
 	local nMFR = table.deepcopy(data.raw.recipe.MobileFactory)
 	nMFR.name = name
-	nMFR.result = name
+	nMFR.result = nil
+	nMFR.results = {{type="item", name=name, amount=1}}
 	nMFR.enabled = false
 	data:extend{nMFR}
 	

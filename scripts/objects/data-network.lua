@@ -92,7 +92,7 @@ function DN.addDataNetworkFrame(GUITable, mainFrame, obj, justCreated)
 		local networks = {}
 		local selected = 1
 		local total = 0
-		for _, MF in pairs(global.MFTable) do
+		for _, MF in pairs(storage.MFTable) do
 			if canUse(GUITable.MFPlayer, MF) then
 				table.insert(networks, MF.player)
 				total = total + 1
@@ -168,7 +168,7 @@ function DN:getCloserNAP(obj)
 	-- Find the closer Network Access Point --
 	local closerNAP = nil
 	local closerNAPDistance = nil
-	for _, nap in pairs(global.networkAccessPointTable) do
+	for _, nap in pairs(storage.networkAccessPointTable) do
 		-- Check the Network Access Point --
 		if nap.ent ~= nil and nap.ent.valid == true and obj.ent.surface == nap.ent.surface then
 			-- Check the distance --
@@ -307,7 +307,7 @@ function DN.interaction(event, MFPlayer)
 	if string.match(event.element.name, "D.N.Select") then
 		-- Get the Object --
 		local ID = event.element.tags.ID
-		local obj = global.entsTable[ID]
+		local obj = storage.entsTable[ID]
 		if obj == nil then return end
 		-- Get the Mobile Factory --
 		local selectedMF = getMF(event.element.items[event.element.selected_index])

@@ -64,10 +64,10 @@ function JD:update()
 
     -- Update the Charge Sprite --
 	local spriteNumber = math.ceil(self.ent.energy/self.ent.prototype.electric_energy_source_prototype.buffer_capacity*16)
-	rendering.destroy(self.chargeSpriteID)
-    rendering.destroy(self.chargeLightID)
+	rendering_destroy(self.chargeSpriteID)
+    rendering_destroy(self.chargeLightID)
     if spriteNumber ~= 0 then
-		rendering.destroy(self.spriteID or 0)
+		rendering_destroy(self.spriteID or 0)
 		self.spriteID = rendering.draw_sprite{sprite="CubeChargeSprite" .. spriteNumber, x_scale=1/2.25, y_scale=1/2.25, target=self.ent, surface=self.ent.surface, render_layer=130}
 	end
 

@@ -57,7 +57,7 @@ function GUI.openTTGui(MFPlayer, player, entity)
 	end
 
 	-- Check if a GUI exist --
-	local obj = global.entsTable[entity.unit_number] or global.objectsTable[entity.unit_number]
+	local obj = storage.entsTable[entity.unit_number] or storage.objectsTable[entity.unit_number]
 
 	-- Check the Object --
 	if valid(obj) == false or (obj.getTooltipInfos == nil and _G[obj.meta] == nil and _G[obj.meta].getTooltipInfos == nil ) then return end

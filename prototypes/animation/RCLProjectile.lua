@@ -1,11 +1,12 @@
 -- RCL Projectiles --
 function createRCLProjectile(ore)
 	local ocOP = {}
-	ocOP.name = "RCLProjectile:" .. ore.name
+	ocOP.name = "RCLProjectile-" .. ore.name
 	ocOP.type = "projectile"
 	ocOP.acceleration = 0
-    local icon = ore.icon or ore.icons[1].icon
-    local iconSize = ore.icon_size or ore.icons[1].icon_size
+    local icon = ore.icon or (ore.icons and ore.icons[1] and ore.icons[1].icon)
+    local iconSize = ore.icon_size or (ore.icons and ore.icons[1] and ore.icons[1].icon_size)
+    if not icon or not iconSize then return end
 	ocOP.animation = {
 		filename = icon,
 		size = iconSize,

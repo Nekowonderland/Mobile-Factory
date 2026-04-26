@@ -27,7 +27,9 @@ ca1T.name = "ConstructibleArea1"
 ca1T.type = "technology"
 ca1T.icons = 
 	{
-		{icon="__base__/graphics/terrain/tutorial-grid/tutorial-grid-o.png", tint={32,165,3}}
+		-- F2: tutorial-grid graphics removed; replaced with lab-dark-1
+		-- {icon="__base__/graphics/terrain/tutorial-grid/tutorial-grid-o.png", tint={32,165,3}}
+		{icon="__base__/graphics/terrain/lab-tiles/lab-dark-1.png", tint={32,165,3}}
 	}
 ca1T.icon_size = 32
 ca1T.unit = {
@@ -48,7 +50,9 @@ ca2T.name = "ConstructibleArea2"
 ca2T.type = "technology"
 ca2T.icons = 
 	{
-		{icon="__base__/graphics/terrain/tutorial-grid/tutorial-grid-o.png", tint={32,165,3}}
+		-- F2: tutorial-grid graphics removed; replaced with lab-dark-1
+		-- {icon="__base__/graphics/terrain/tutorial-grid/tutorial-grid-o.png", tint={32,165,3}}
+		{icon="__base__/graphics/terrain/lab-tiles/lab-dark-1.png", tint={32,165,3}}
 	}
 ca2T.icon_size = 32
 ca2T.unit = {

@@ -42,7 +42,7 @@ end
 -- Destructor --
 function DS:remove()
 	-- Destroy the Animation --
-	rendering.destroy(self.animID)
+	rendering_destroy(self.animID)
 	-- Remove from the Update System --
 	UpSys.removeObj(self)
 	-- Remove from the Data Network --
@@ -68,7 +68,7 @@ function DS:update()
 	end
 
 	-- Check the Animation --
-	if rendering.is_valid(self.animID) == false then
+	if rendering_is_valid(self.animID) == false then
 		self.animID = rendering.draw_animation{animation="DataStorageA", target={self.ent.position.x,self.ent.position.y-1.2}, surface=self.ent.surface, render_layer=131}
 	end
 	

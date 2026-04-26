@@ -41,9 +41,9 @@ shR.energy_required = 5
 shR.enabled = false
 shR.ingredients =
     {
-		{"CrystalizedCircuit", 50}
+		{type="item", name="CrystalizedCircuit", amount=50}
     }
-shR.result = "mfShieldEquipment"
+shR.results = {{type="item", name="mfShieldEquipment", amount=1}}
 data:extend{shR}
 
 -- Technology --

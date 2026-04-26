@@ -4,7 +4,7 @@ require("prototypes/entity/mobile-factory-base.lua")
 -- Mobile Factory GT --
 createNewMF("GTMobileFactory", {1,0.2,0.2}, 0.7, "b", "__Mobile_Factory_Graphics__/graphics/mobile-factory/QuickMF.png")
 data.raw.car.GTMobileFactory.max_health = 1000
-data.raw.car.GTMobileFactory.consumption = "800KW"
+data.raw.car.GTMobileFactory.consumption = "800kW"
 data.raw.car.GTMobileFactory.weight = 8000
 data.raw.car.GTMobileFactory.rotation_speed = 0.75 / 60
 data.raw.car.GTMobileFactory.effectivity = 2.3
@@ -15,9 +15,9 @@ data.raw.car.GTMobileFactory.equipment_grid = "MFEquipmentGridGT"
 data.raw.car.GTMobileFactory.inventory_size = 3
 data.raw.recipe.GTMobileFactory.ingredients =
 {
-	{"car", 1},
-    {"CrystalizedCircuit", 35},
-    {"MachineFrame3", 15}
+	{type="item", name="car", amount=1},
+    {type="item", name="CrystalizedCircuit", amount=35},
+    {type="item", name="MachineFrame3", amount=15}
 }
 data.raw.technology.GTMobileFactory.unit =
 {
@@ -39,15 +39,15 @@ data.raw.car.HMobileFactory.rotation_speed = 0.15 / 60
 data.raw.car.HMobileFactory.effectivity = 0.8
 data.raw.car.HMobileFactory.equipment_grid = "MFEquipmentGridH"
 data.raw.car.HMobileFactory.inventory_size = 8
-data.raw.car.HMobileFactory.collision_mask = {}
+data.raw.car.HMobileFactory.collision_mask = {layers = {}}
 data.raw.car.HMobileFactory.animation.layers[3].shift = util.by_pixel(17.75, 80)
 data.raw.car.HMobileFactory.selection_priority = 120
 data.raw.recipe.HMobileFactory.ingredients =
 {
-	{"MobileFactory", 1},
-    {"CrystalizedCircuit", 20},
-    {"MachineFrame3", 25},
-	{"EnergyCore", 1}
+	{type="item", name="MobileFactory", amount=1},
+    {type="item", name="CrystalizedCircuit", amount=20},
+    {type="item", name="MachineFrame3", amount=25},
+	{type="item", name="EnergyCore", amount=1}
 }
 data.raw.technology.HMobileFactory.unit =
 {

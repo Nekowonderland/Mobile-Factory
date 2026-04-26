@@ -49,7 +49,9 @@ data:extend{dsE}
 
 -- Item --
 local dsI = {}
-dsI.type = "item-with-tags"
+-- F2: "item-with-tags" merged into "item"
+-- dsI.type = "item-with-tags"
+dsI.type = "item"
 dsI.name = "DeepStorage"
 dsI.icon = "__Mobile_Factory_Graphics__/graphics/icons/DeepStorageI.png"
 dsI.icon_size = 256
@@ -67,10 +69,10 @@ dsR.energy_required = 2
 dsR.enabled = false
 dsR.ingredients =
     {
-      {"CrystalizedCircuit", 8},
-      {"MachineFrame3", 2}
+      {type="item", name="CrystalizedCircuit", amount=8},
+      {type="item", name="MachineFrame3", amount=2}
     }
-dsR.result = "DeepStorage"
+dsR.results = {{type="item", name="DeepStorage", amount=1}}
 data:extend{dsR}
 
 -- Technologie --

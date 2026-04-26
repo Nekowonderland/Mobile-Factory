@@ -83,8 +83,8 @@ function GUI.readOptions(option, player)
 
 	------------------- Game -------------------
 	if name == "Opt.GUI.FloorIsLavaOpt" then
-		global.floorIsLavaActivated = option.state
-		if global.floorIsLavaActivated == true then
+		storage.floorIsLavaActivated = option.state
+		if storage.floorIsLavaActivated == true then
 			game.print({"gui-description.FloorIsLavaActivated"})
 		else
 			game.print({"gui-description.FloorIsLavaDeactivated"})
@@ -94,12 +94,12 @@ function GUI.readOptions(option, player)
 	if name == "Opt.GUI.AddDARecipeToBlackList" then
 		local selectedCategory = GUITable.vars.blacklistDAList.items[GUITable.vars.blacklistDAList.selected_index]
 		if selectedCategory == nil then return end
-		global.dataAssemblerBlacklist[selectedCategory] = true
+		storage.dataAssemblerBlacklist[selectedCategory] = true
 	end
 	if name == "Opt.GUI.RemoveDARecipeFromBlackList" then
 		local selectedCategory = GUITable.vars.blacklistDAList.items[GUITable.vars.blacklistDAList.selected_index]
 		if selectedCategory == nil then return end
-		global.dataAssemblerBlacklist[selectedCategory] = nil
+		storage.dataAssemblerBlacklist[selectedCategory] = nil
 	end
 
 	------------------- Performances -------------------
@@ -108,12 +108,12 @@ function GUI.readOptions(option, player)
 		if number == nil then return end
 		number = math.max(number, 10)
 		number = math.min(number, 10000)
-		global.entsUpPerTick = number
+		storage.entsUpPerTick = number
 		game.print({"", {"gui-description.EntitiesUpdatePerTickNumber"}, " ", number})
 	end
 
 	if name == "Opt.GUI.UseVanillaRecipeSelector" then
-		global.useVanillaChooseElem = option.state
+		storage.useVanillaChooseElem = option.state
 	end
 
 	if name == "Opt.GUI.EryaDebugOption" then

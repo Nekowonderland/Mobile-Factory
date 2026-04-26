@@ -28,7 +28,7 @@ function GUI.createRecipeGUI(player)
 	-- Split Recipes by groups --
 	local recipeTable = {}
 	for _, r in pairs(player.force.recipes) do
-		if r.enabled == true and r.hidden == false and not global.dataAssemblerBlacklist[r.category] then
+		if r.enabled == true and r.hidden == false and not storage.dataAssemblerBlacklist[r.category] then
 			if recipeTable[r.group.name] == nil then
 				recipeTable[r.group.name] = {}
 			end
@@ -58,10 +58,10 @@ function GUI.createRecipeGUI(player)
 		local subgroupArray = {}
 		for subgroupName, recipes in pairs(subgroups) do
 			table.sort(recipes, rsorter)
-			table.insert(subgroupArray, {obj=game.item_subgroup_prototypes[subgroupName], list=recipes})
+			table.insert(subgroupArray, {obj=prototypes.item_subgroup[subgroupName], list=recipes})
 		end
 		table.sort(subgroupArray, rsorter)
-		table.insert(groupsArray, {obj=game.item_group_prototypes[groupName], list=subgroupArray})
+		table.insert(groupsArray, {obj=prototypes.item_group[groupName], list=subgroupArray})
 	end
 	table.sort(groupsArray, rsorter)
 

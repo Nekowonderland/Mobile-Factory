@@ -78,11 +78,11 @@ jcR.energy_required = 5
 jcR.enabled = false
 jcR.ingredients =
     {
-      {"CrystalizedCircuit", 25},
-      {"MachineFrame3", 3},
-      {"EnergyCore", 5}
+      {type="item", name="CrystalizedCircuit", amount=25},
+      {type="item", name="MachineFrame3", amount=3},
+      {type="item", name="EnergyCore", amount=5}
     }
-jcR.result = "JumpCharger"
+jcR.results = {{type="item", name="JumpCharger", amount=1}}
 data:extend{jcR}
 
 -- Technology --

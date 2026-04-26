@@ -2,7 +2,10 @@
 function Event.somethingWasPlaced(event)
 
 	-- If Tiles was placed --
-	if event.tile ~= nil or event.created_entity ~= nil and event.created_entity.name == "tile-ghost" then
+	-- F2: on_built_entity uses event.entity instead of event.created_entity
+	-- if event.tile ~= nil or event.created_entity ~= nil and event.created_entity.name == "tile-ghost" then
+	local _builtEnt = event.created_entity or event.entity
+	if event.tile ~= nil or (_builtEnt ~= nil and _builtEnt.name == "tile-ghost") then
 		tilesWasPlaced(event)
 		return
 	end
@@ -40,7 +43,7 @@ function Event.somethingWasPlaced(event)
 	local type = entity.type
 	local entName = type == "entity-ghost" and entity.ghost_name or entity.name
 	local locName = type == "entity-ghost" and entity.ghost_localised_name or entity.localised_name
-	local objInfo = global.objTable[entName]
+	local objInfo = storage.objTable[entName]
 	local destroyEntity = false
 
 	-- Check if the Entity is allowed to be placed --
@@ -134,7 +137,9 @@ function Event.somethingWasPlaced(event)
 			objTable.blueprintTagsToSettings(obj, event.tags)
 		end
 		-- Check if there are Item Tags --
-		if event.stack ~= nil and event.stack.valid_for_read == true and event.stack.type == "item-with-tags" and objTable.itemTagsToContent ~= nil then
+		-- F2: .type == "item-with-tags" always false; check tags directly via get_tag
+		-- if event.stack ~= nil and event.stack.valid_for_read == true and event.stack.type == "item-with-tags" and objTable.itemTagsToContent ~= nil then
+		if event.stack ~= nil and event.stack.valid_for_read == true and objTable.itemTagsToContent ~= nil then
 			local tags = event.stack.get_tag("Infos")
 			if tags ~= nil then
 				objTable.itemTagsToContent(obj, tags)
@@ -150,14 +155,16 @@ function Event.somethingWasPlaced(event)
 	if objInfo ~= nil and objInfo.noPlaced ~= true and objInfo.tag ~= nil then
 		local obj = _G[objInfo.tag]:new(entity)
 		if objInfo.tableName ~= nil then
-			global[objInfo.tableName][entity.unit_number] = obj
+			storage[objInfo.tableName][entity.unit_number] = obj
 		end
 		-- Check if there are Blueprint Tags --
 		if event.tags and obj.blueprintTagsToSettings then
 			obj:blueprintTagsToSettings(event.tags)
 		end
 		-- Check if there are Item Tags --
-		if event.stack ~= nil and event.stack.valid_for_read == true and event.stack.type == "item-with-tags" then
+		-- F2: .type == "item-with-tags" always false; check via get_tag directly
+		-- if event.stack ~= nil and event.stack.valid_for_read == true and event.stack.type == "item-with-tags" then
+		if event.stack ~= nil and event.stack.valid_for_read == true then
 			local tags = event.stack.get_tag("Infos")
 			if tags ~= nil then
 				obj:itemTagsToContent(tags)
@@ -176,7 +183,7 @@ function Event.somethingWasCloned(event)
 	-- If a Mobile Factory was cloned --
 	if event.source  ~= nil and event.source.valid == true and event.destination ~= nil and event.destination.valid == true and string.match(event.source.name, "MobileFactory") then
 		-- Find the Mobile Factory --
-		for _, mf in pairs(global.MFTable) do
+		for _, mf in pairs(storage.MFTable) do
 			if mf.ent ~= nil and mf.ent.valid == true and mf.ent == event.source then
 				-- Teleport the Mobile Factory --
 				mf.ent.teleport(event.destination.position, event.destination.surface)
@@ -200,7 +207,7 @@ function Event.somethingWasRemoved(event)
 	if removedEnt == nil or removedEnt.valid == false then return end
 
 	-- Get and Check the Values --
-	local obj = global.entsTable[removedEnt.unit_number] or global.objectsTable[removedEnt.unit_number]
+	local obj = storage.entsTable[removedEnt.unit_number] or storage.objectsTable[removedEnt.unit_number]
 	if obj == nil then return end
 	local MF = obj.MF
 	if MF == nil then return end
@@ -261,10 +268,10 @@ function Event.somethingWasRemoved(event)
 	obj:remove()
 	
 	-- Remove the Object from its Table --
-	local objInfo = global.objTable[removedEnt.name]
+	local objInfo = storage.objTable[removedEnt.name]
 	if objInfo == nil then return end
 	if objInfo.tableName == nil then return end
-	global[objInfo.tableName][removedEnt.unit_number] = nil
+	storage[objInfo.tableName][removedEnt.unit_number] = nil
 
 end
 
@@ -272,7 +279,9 @@ end
 function tilesWasPlaced(event)
 	-- Get the Values --
 	local MFPlayer = getMFPlayer(event.player_index)
-	local surface = game.get_surface(event.surface_index or event.created_entity.surface.index)
+	-- F2: event.created_entity renamed to event.entity for on_built_entity
+	-- local surface = game.get_surface(event.surface_index or event.created_entity.surface.index)
+	local surface = game.get_surface(event.surface_index or (event.entity or event.created_entity).surface.index)
 	local MFFloor = getMFFloor(surface.name)
 
 	-- Prevent to place Tiles inside the Control Center --
@@ -288,9 +297,12 @@ function tilesWasPlaced(event)
 		return
 	end
 	-- Prevent to place a Ghost --
-	if event.created_entity ~= nil and MFFloor == _mfControlSurfaceName then
+	-- F2: event.created_entity renamed to event.entity
+	-- if event.created_entity ~= nil and MFFloor == _mfControlSurfaceName then
+	local _ghostEnt = event.entity or event.created_entity
+	if _ghostEnt ~= nil and MFFloor == _mfControlSurfaceName then
 		-- Destroy the Ghost --
-		event.created_entity.destroy()
+		_ghostEnt.destroy()
 		-- Try to send a message to the Player --
 		if MFPlayer ~= nil and event.stack ~= nil and event.stack.valid_for_read == true then
 			MFPlayer.ent.print({"", {"item-name." .. event.stack.name }, " ", {"gui-description.CCNotPlaceable"}})
