@@ -12,7 +12,7 @@ ttE.fast_replaceable_group = nil
 ttE.next_upgrade = nil
 ttE.fluid_box =
     {
-      base_area = 10000,
+      volume = 100000,
       height = 100,
       base_level = -1,
       pipe_covers = pipecoverspictures(),

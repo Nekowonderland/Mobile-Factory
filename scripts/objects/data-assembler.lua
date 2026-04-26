@@ -54,7 +54,7 @@ end
 -- Destructor --
 function DA:remove()
 	-- Destroy the Sprites --
-	rendering.destroy(self.stateSprite)
+	rendering_destroy(self.stateSprite)
 	-- Remove from the Update System --
 	UpSys.removeObj(self)
 	-- Remove from the Network Access Point --
@@ -186,7 +186,7 @@ function DA:getTooltipInfos(GUITable, mainFrame, justCreated)
 
 		-- Create the Recipe selector --
 		local recipeSelector = GAPI.addFilter(GUITable, "D.A.RecipeFilter", addRFlow, {"gui-description.AddRecipeFilterTT"}, true, "recipe", 28)
-		recipeSelector.locked = not global.useVanillaChooseElem
+		recipeSelector.locked = not storage.useVanillaChooseElem
 
 		-- Create the Add Recipe Button --
 		GAPI.addButton(GUITable, "D.A.AddRecipeButton", addRFlow, "PlusIcon", "PlusIcon", {"gui-description.AddRecipeButtonTT"}, 28, false, true, nil, nil, {ID=self.entID})
@@ -480,11 +480,11 @@ function DA:setActive(set)
     self.active = set
     if set == true then
         -- Create the Active Sprite --
-        rendering.destroy(self.stateSprite)
+        rendering_destroy(self.stateSprite)
         self.stateSprite = rendering.draw_sprite{sprite="DataAssemblerSprite2", target=self.ent, surface=self.ent.surface, render_layer=131}
     else
         -- Create the Inactive Sprite --
-        rendering.destroy(self.stateSprite)
+        rendering_destroy(self.stateSprite)
         self.stateSprite = rendering.draw_sprite{sprite="DataAssemblerSprite1", target=self.ent, surface=self.ent.surface, render_layer=131}
     end
 end
@@ -510,10 +510,10 @@ function DA:addRecipe(name)
 	if name == nil then return false end
 	
 	-- Check the Recipe --
-	local recipePrototype = game.recipe_prototypes[name]
+	local recipePrototype = prototypes.recipe[name]
 	if recipePrototype == nil then return false end
 
-	if self.ent.force.recipes[name] == nil or not self.ent.force.recipes[name].enabled or global.dataAssemblerBlacklist[recipePrototype.category] then
+	if self.ent.force.recipes[name] == nil or not self.ent.force.recipes[name].enabled or storage.dataAssemblerBlacklist[recipePrototype.category] then
 		local player = getPlayer(self.player)
 		player.print({"", {"gui-description.DAWrongRecipe"}})
 		return false
@@ -522,10 +522,10 @@ function DA:addRecipe(name)
 	-- Create the Ingredients Table --
 	local ingredientsTable = {}
 	for _, ingredient in pairs(recipePrototype.ingredients) do
-		if game.item_prototypes[ingredient.name] ~= nil then
-			table.insert(ingredientsTable, {name=ingredient.name, type=ingredient.type, amount=ingredient.amount, sprite="item/" .. ingredient.name, tooltip=game.item_prototypes[ingredient.name].localised_name})
-		elseif game.fluid_prototypes[ingredient.name] ~= nil then
-			table.insert(ingredientsTable, {name=ingredient.name, type=ingredient.type, amount=ingredient.amount, sprite="fluid/" .. ingredient.name, tooltip=game.fluid_prototypes[ingredient.name].localised_name})
+		if prototypes.item[ingredient.name] ~= nil then
+			table.insert(ingredientsTable, {name=ingredient.name, type=ingredient.type, amount=ingredient.amount, sprite="item/" .. ingredient.name, tooltip=prototypes.item[ingredient.name].localised_name})
+		elseif prototypes.fluid[ingredient.name] ~= nil then
+			table.insert(ingredientsTable, {name=ingredient.name, type=ingredient.type, amount=ingredient.amount, sprite="fluid/" .. ingredient.name, tooltip=prototypes.fluid[ingredient.name].localised_name})
 		else
 			return false
 		end
@@ -534,10 +534,10 @@ function DA:addRecipe(name)
 	-- Get all Products
 	local products = {}
 	for _, product in ipairs(recipePrototype.products) do
-		if game.item_prototypes[product.name] ~= nil then
-			table.insert(products, {name=product.name, type=product.type, amount=product.amount, probability = product.probability or 1,sprite="item/" .. product.name, tooltip=game.item_prototypes[product.name].localised_name})
-		elseif game.fluid_prototypes[product.name] ~= nil then
-			table.insert(products, {name=product.name, type=product.type, amount=product.amount, probability = product.probability or 1, sprite="fluid/" .. product.name, tooltip=game.fluid_prototypes[product.name].localised_name})
+		if prototypes.item[product.name] ~= nil then
+			table.insert(products, {name=product.name, type=product.type, amount=product.amount, probability = product.probability or 1,sprite="item/" .. product.name, tooltip=prototypes.item[product.name].localised_name})
+		elseif prototypes.fluid[product.name] ~= nil then
+			table.insert(products, {name=product.name, type=product.type, amount=product.amount, probability = product.probability or 1, sprite="fluid/" .. product.name, tooltip=prototypes.fluid[product.name].localised_name})
 		else
 			return false
 		end
@@ -642,7 +642,7 @@ end
 
 -- Process a Recip --
 function DA:processRecipe(recipe)
-	recipe.progress = recipe.progress + (1/12 * math.pow(EI.energyLevel(self), _mfQuatronScalePower) / 4)
+	recipe.progress = recipe.progress + (1/12 * (EI.energyLevel(self) ^ _mfQuatronScalePower) / 4)
 	EI.removeEnergy(self, 1/12)
 end
 
@@ -800,7 +800,7 @@ end
 function DA.interaction(event, MFPlayer)
 
 	-- Select Recipe --
-	if event.element.name == "D.A.RecipeFilter" and global.useVanillaChooseElem == false then
+	if event.element.name == "D.A.RecipeFilter" and storage.useVanillaChooseElem == false then
 		if MFPlayer.GUI[_mfGUIName.RecipeGUI] ~= nil then
 			MFPlayer.GUI[_mfGUIName.RecipeGUI].gui.destroy()
 			MFPlayer.GUI[_mfGUIName.RecipeGUI] = nil
@@ -814,7 +814,7 @@ function DA.interaction(event, MFPlayer)
 	if string.match(event.element.name, "D.A.AddRecipeButton") then
 		local GUITable = MFPlayer.GUI["MFTooltipGUI"]
 		local objID = event.element.tags.ID
-		local obj = global.dataAssemblerTable[objID]
+		local obj = storage.dataAssemblerTable[objID]
 		if valid(obj) == false then return end
 		local recipe = GUITable.vars["D.A.RecipeFilter"].elem_value
 		GUITable.vars["D.A.RecipeFilter"].elem_value = nil
@@ -826,7 +826,7 @@ function DA.interaction(event, MFPlayer)
 	-- Remove a Recipe - Tooltip GUI --
 	if string.match(event.element.name, "D.A.RecipeButton") and event.button == defines.mouse_button_type.right then
 		local objID = event.element.tags.ID
-		local obj = global.dataAssemblerTable[objID]
+		local obj = storage.dataAssemblerTable[objID]
 		local recipeID = event.element.tags.recipeID
 		if valid(obj) == false then return end
 		obj:removeRecipe(recipeID)
@@ -837,7 +837,7 @@ function DA.interaction(event, MFPlayer)
 	-- Open the Recipe Information GUI --
 	if string.match(event.element.name, "D.A.RecipeInfoButton") then
 		local objID = event.element.tags.ID
-		local obj = global.dataAssemblerTable[objID]
+		local obj = storage.dataAssemblerTable[objID]
 		local recipeID = event.element.tags.recipeID
 		if valid(obj) == false then return end
 		obj:createInfoRecipeWindow(MFPlayer, recipeID)
@@ -848,7 +848,7 @@ function DA.interaction(event, MFPlayer)
 	-- Remove a Recipe - Recipe Information GUI --
 	if string.match(event.element.name, "D.A.RIRemoveRecipe") then
 		local objID = event.element.tags.ID
-		local obj = global.dataAssemblerTable[objID]
+		local obj = storage.dataAssemblerTable[objID]
 		local recipeID = event.element.tags.recipeID
 		if valid(obj) == false or recipeID == nil or recipeID == 0 then return end
 		obj:removeRecipe(recipeID)
@@ -861,7 +861,7 @@ function DA.interaction(event, MFPlayer)
 	-- Pause a Recipe --
 	if string.match(event.element.name, "D.A.RIPauseResumeRecipe") then
 		local objID = event.element.tags.ID
-		local obj = global.dataAssemblerTable[objID]
+		local obj = storage.dataAssemblerTable[objID]
 		local recipeID = event.element.tags.recipeID
 		if valid(obj) == false or recipeID == nil or recipeID == 0 then return end
 		if obj.recipeTable[recipeID].paused == true then
@@ -876,7 +876,7 @@ function DA.interaction(event, MFPlayer)
 	-- Confirm a Recipe - Change --
 	if string.match(event.element.name, "D.A.RIChangeRecipe") then
 		local objID = event.element.tags.ID
-		local obj = global.dataAssemblerTable[objID]
+		local obj = storage.dataAssemblerTable[objID]
 		local recipeID = event.element.tags.recipeID
 		if valid(obj) == false or recipeID == nil or recipeID == 0 then return end
 		local GUITable = MFPlayer.GUI[_mfGUIName.RecipeInfoGUI]
@@ -892,7 +892,7 @@ function DA.interaction(event, MFPlayer)
 	-- Confirm a Recipe - Add --
 	if string.match(event.element.name, "D.A.RIAddRecipe") then
 		local objID = event.element.tags.ID
-		local obj = global.dataAssemblerTable[objID]
+		local obj = storage.dataAssemblerTable[objID]
 		obj:confirmRecipe(MFPlayer)
 		MFPlayer.GUI[_mfGUIName.RecipeInfoGUI].gui.destroy()
 		MFPlayer.GUI[_mfGUIName.RecipeInfoGUI] = nil

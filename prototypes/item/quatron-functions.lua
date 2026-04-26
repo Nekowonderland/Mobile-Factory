@@ -63,7 +63,7 @@ qcR.subgroup = "QuatronsToCell"
 qcR.energy_required = 2
 qcR.enabled = false
 qcR.ingredients = {{type="fluid", name="LiquidQuatron" .. tonumber(level), amount=1000}}
-qcR.result = "Quatron" .. tonumber(level)
+qcR.results = {{type="item", name="Quatron" .. tonumber(level), amount=1}}
 data:extend{qcR}
 
 -- Cell to Quatron Recipe --

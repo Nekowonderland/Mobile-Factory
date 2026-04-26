@@ -1,7 +1,7 @@
-if global.allowMigration == false then return end
+if storage.allowMigration == false then return end
 
 -- Nil all unused Quatron Lasers variables --
-for _, ql in pairs(global.quatronLaserTable or {}) do
+for _, ql in pairs(storage.quatronLaserTable or {}) do
     ql.quatronCharge = nil
     ql.quatronLevel = nil
     ql.quatronMax = nil
@@ -10,7 +10,7 @@ for _, ql in pairs(global.quatronLaserTable or {}) do
 end
 
 -- Nil all unused Quatron Cubes variables --
-for _, qc in pairs(global.quatronCubesTable or {}) do
+for _, qc in pairs(storage.quatronCubesTable or {}) do
     qc.energyLevel = qc.quatronLevel
     qc.quatronCharge = nil
     qc.quatronLevel = nil
@@ -20,7 +20,7 @@ for _, qc in pairs(global.quatronCubesTable or {}) do
 end
 
 -- Nil all unused Internal Quatron Cubes variables --
-for _, iqc in pairs(global.internalQuatronObj or {}) do
+for _, iqc in pairs(storage.internalQuatronObj or {}) do
     iqc.energyLevel = iqc.quatronLevel
     iqc.quatronCharge = nil
     iqc.quatronLevel = nil
@@ -30,7 +30,7 @@ for _, iqc in pairs(global.internalQuatronObj or {}) do
 end
 
 -- Fix all Quatron Reactors variables --
-for _, qr in pairs(global.quatronReactorTable or {}) do
+for _, qr in pairs(storage.quatronReactorTable or {}) do
     qr.energyCharge = qr.quatronCharge
     qr.energyLevel = qr.quatronLevel
     qr.quatronCharge = nil
@@ -41,7 +41,7 @@ for _, qr in pairs(global.quatronReactorTable or {}) do
 end
 
 -- Fix all Network Access Points variables --
-for _, nap in pairs(global.networkAccessPointTable or {}) do
+for _, nap in pairs(storage.networkAccessPointTable or {}) do
     nap.energyCharge = nap.quatronCharge
     nap.energyLevel = nap.quatronLevel
     nap.quatronCharge = nil
@@ -52,7 +52,7 @@ for _, nap in pairs(global.networkAccessPointTable or {}) do
 end
 
 -- Fix all Fluid Extractors variables --
-for _, fe in pairs(global.fluidExtractorTable or {}) do
+for _, fe in pairs(storage.fluidExtractorTable or {}) do
     fe.energyCharge = fe.quatronCharge
     fe.energyLevel = fe.quatronLevel
     fe.quatronCharge = nil
@@ -63,7 +63,7 @@ for _, fe in pairs(global.fluidExtractorTable or {}) do
 end
 
 -- Fix all Ore Cleaners variables --
-for _, oc in pairs(global.fluidExtractorTable or {}) do
+for _, oc in pairs(storage.fluidExtractorTable or {}) do
     oc.energyCharge = oc.quatronCharge
     oc.energyLevel = oc.quatronLevel
     oc.quatronCharge = nil

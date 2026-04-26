@@ -1,17 +1,17 @@
--- Return the global Object --
+-- Return the storage Object --
 function getGlobal()
-    return global
+    return storage
 end
 
 -- Return the MFTable --
 function getMFTable()
-    return global.MFTable
+    return storage.MFTable
 end
 
 -- Return name list of all Users with a Mobile Factory --
 function getMFUsersList()
     local MFUsersList = {}
-    for k, _ in pairs(global.MFTable) do
+    for k, _ in pairs(storage.MFTable) do
         table.insert(MFUsersList, k)
     end
     return MFUsersList
@@ -19,63 +19,63 @@ end
 
 -- Return a MF Object from its owner name --
 function getMFObj(name)
-    return global.MFTable[name]
+    return storage.MFTable[name]
 end
 
 -- Return a MF Entity from its owner name --
 function getMFEnt(name)
-    if global.MFTable[name] ~= nil then
-        return global.MFTable[name].ent
+    if storage.MFTable[name] ~= nil then
+        return storage.MFTable[name].ent
     end
 end
 
 -- Return a MF Energy from its owner name --
 function getMFEnergy(name)
-    if global.MFTable[name] ~= nil then
-        return EI.energy(global.MFTable[name].internalEnergyObj)
+    if storage.MFTable[name] ~= nil then
+        return EI.energy(storage.MFTable[name].internalEnergyObj)
     end
     return 0
 end
 
 -- Remove Energy from a MF from its owner name --
 function removeMFEnergy(name, amount)
-    if global.MFTable[name] ~= nil then
-        return EI.removeEnergy(global.MFTable[name].internalEnergyObj, amount)
+    if storage.MFTable[name] ~= nil then
+        return EI.removeEnergy(storage.MFTable[name].internalEnergyObj, amount)
     end
     return 0
 end
 
 -- Check if the Data Network has this Item --
 function hasItems(name, item)
-    if global.MFTable[name] ~= nil then
-        return global.MFTable[name].dataNetwork:hasItem(item)
+    if storage.MFTable[name] ~= nil then
+        return storage.MFTable[name].dataNetwork:hasItem(item)
     end
     return 0
 end
 
 -- Add Items to the Data Network --
 function addItems(name, item, amount)
-    if global.MFTable[name] ~= nil then
-        return global.MFTable[name].dataNetwork:addItems(item, amount)
+    if storage.MFTable[name] ~= nil then
+        return storage.MFTable[name].dataNetwork:addItems(item, amount)
     end
     return 0
 end
 
 -- Remove Items from the Data Network --
 function takeItems(name, item, amount)
-    if global.MFTable[name] ~= nil then
-        return global.MFTable[name].dataNetwork:getItem(item, amount)
+    if storage.MFTable[name] ~= nil then
+        return storage.MFTable[name].dataNetwork:getItem(item, amount)
     end
     return 0
 end
 
 -- Add or remove crafting category to Data Assembler blacklist
 function blacklistDACategory(category, value)
-	if global.dataAssemblerBlacklist ~= nil then
+	if storage.dataAssemblerBlacklist ~= nil then
 		if value then
-			global.dataAssemblerBlacklist[category] = true
+			storage.dataAssemblerBlacklist[category] = true
 		else
-			global.dataAssemblerBlacklist[category] = nil
+			storage.dataAssemblerBlacklist[category] = nil
 		end
 	end
 end

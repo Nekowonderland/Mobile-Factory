@@ -21,10 +21,12 @@ function createMFSurface(MF)
 	-- Generate surface --
 	newSurface.request_to_generate_chunks({0,0},4)
 	newSurface.force_generate_chunk_requests()
+	-- F2: VoidTile has no autoplace expression so terrain generates as grass; fill manually
+	createTilesSurface(newSurface, -150, -150, 150, 150, "VoidTile")
 	-- Set tiles --
-	createTilesSurface(newSurface, -50, -50, 50, 50, "tutorial-grid")
+	createTilesSurface(newSurface, -50, -50, 50, 50, "lab-dark-1")
 	createTilesSurface(newSurface, -3, -4, 3, 4, "concrete")
-    createTilesSurface(newSurface, -1, -1, 1, 1, "refined-hazard-concrete-right")
+	createTilesSurface(newSurface, -1, -1, 1, 1, "refined-hazard-concrete-right")
 	-- Save variable --
 	MF.fS = newSurface
 	-- Create CC and apply researches if needed --
@@ -56,8 +58,10 @@ function createControlRoom(MF)
 		-- Regenerate surface --
 		newSurface.request_to_generate_chunks({0,0},1)
 		newSurface.force_generate_chunk_requests()
+		-- F2: VoidTile has no autoplace expression so terrain generates as grass; fill manually
+		createTilesSurface(newSurface, -45, -45, 45, 45, "VoidTile")
 		-- Set tiles --
-		createTilesSurface(newSurface, -10, -10, 10, 10, "tutorial-grid")
+		createTilesSurface(newSurface, -10, -10, 10, 10, "lab-dark-1")
 		-- Set TP tiles --
 		createTilesSurface(newSurface, -3, 5, 3, 7, "refined-hazard-concrete-right")
 		-- Create Internal Power Cubes --
@@ -91,47 +95,4 @@ function createEntity(surface, posX, posY, entityName, force, player)
 	return surface.create_entity{name=entityName, position={posX,posY}, force=force, player=player}
 end
 
--- Create the Sync Area Surface --
--- function createSyncAreaMFSurface(surface, dirt)
--- 	local radius = _mfSyncAreaRadius + 1
--- 	validateSyncAreaTile()
--- 	if dirt == true then
--- 		createTilesSurface(surface, _mfSyncAreaPosition.x - radius, _mfSyncAreaPosition.y - radius, _mfSyncAreaPosition.x + radius, _mfSyncAreaPosition.y + radius, global.syncTile)
--- 	end
--- 	createTilesSurface(surface, _mfSyncAreaPosition.x - 2, _mfSyncAreaPosition.y - 4, _mfSyncAreaPosition.x + 2, _mfSyncAreaPosition.y + 4, "DimensionalTile")
--- 	createTilesSurface(surface, _mfSyncAreaPosition.x - 4, _mfSyncAreaPosition.y - 2, _mfSyncAreaPosition.x + 4, _mfSyncAreaPosition.y + 2, "DimensionalTile")
--- 	createTilesSurface(surface, _mfSyncAreaPosition.x - 3, _mfSyncAreaPosition.y - 3, _mfSyncAreaPosition.x + 3, _mfSyncAreaPosition.y + 3, "DimensionalTile")
--- 	createTilesSurface(surface, -1, -1, 1, 1, "refined-hazard-concrete-right")
--- end
-
--- function validateSyncAreaTile()
--- 	-- Workaround if Un-Inited, Simpler Than Migration --
--- 	if global.syncTile == nil then
--- 		global.syncTile = "dirt-7"
--- 	end
--- 	-- Workaround if Default Sync Tile dirt-7 Is Missing --
--- 	if game.tile_prototypes[global.syncTile] == nil then
--- 		global.syncTile = nil
-
--- 		-- Check for grass-1 First --
--- 		for tileName in pairs(game.tile_prototypes) do
--- 			-- Alien Biomes (or other mod) leaves grass-1 alone, but makes all dirt colorful
--- 			if string.find(tileName, "grass") then
--- 				global.syncTile = tileName
--- 				break
--- 			end
--- 		end
-
--- 		if global.syncTile == nil then
--- 			for tileName in pairs(game.tile_prototypes) do
--- 				if string.find(tileName, "dirt") then
--- 					global.syncTile = tileName
--- 					break
--- 				end
--- 			end			
--- 		end
--- 		if global.syncTile == nil then
--- 			error("Unable to find suitable tile for Sync Area.")
--- 		end
--- 	end
--- end
+-- Sync Area Surface functions removed (unused, Factorio 2 migration)

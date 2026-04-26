@@ -9,7 +9,9 @@ rcE.icon = "__Mobile_Factory_Graphics__/graphics/entity/ResourceCatcherI.png"
 rcE.icon_size = 128
 rcE.minable = {mining_time = 0.2, result = "ResourceCatcher"}
 rcE.max_health = 30
-rcE.collision_mask = {"train-layer","object-layer"}
+-- F2: old string-array format
+-- rcE.collision_mask = {"train-layer","object-layer"}
+rcE.collision_mask = {layers = {train = true, object = true}}
 rcE.corpse = "land-mine-remnants"
 rcE.collision_box = {{-0.49, -0.49}, {0.49, 0.49}}
 rcE.selection_box = {{-0.5, -0.5}, {0.5, 0.5}}
@@ -48,7 +50,9 @@ data:extend{rcI}
 
 -- Filled Item --
 local frcI = {}
-frcI.type = "item-with-tags"
+-- F2: "item-with-tags" merged into "item" (tags still accessible via LuaItemStack.tags)
+-- frcI.type = "item-with-tags"
+frcI.type = "item"
 frcI.name = "FilledResourceCatcher"
 frcI.localised_name = {"item-name.FilledResourceCatcher"}
 frcI.place_result = "ResourceCatcher"
@@ -67,10 +71,10 @@ rcR.energy_required = 5
 rcR.enabled = false
 rcR.ingredients =
 {
-    {"DimensionalCircuit", 3},
-    {"MachineFrame2", 1}
+    {type="item", name="DimensionalCircuit", amount=3},
+    {type="item", name="MachineFrame2", amount=1}
 }
-rcR.result = "ResourceCatcher"
+rcR.results = {{type="item", name="ResourceCatcher", amount=1}}
 data:extend{rcR}
 
 -- Technology --

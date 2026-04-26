@@ -5,12 +5,12 @@ function Event.initPlayer(event)
 	if player.controller_type == defines.controllers.cutscene then return end
 	--player.force.technologies["DimensionalOre"].researched = true
 	if getMFPlayer(player.name) == nil then
-		global.playersTable[player.name] = MFP:new(player)
+		storage.playersTable[player.name] = MFP:new(player)
 		-- Mobile Factory Object --
 		local MF = MF:new({player = player})
 		createMFSurface(MF)
 		createControlRoom(MF)
-		global.playersTable[player.name].MF = MF
+		storage.playersTable[player.name].MF = MF
 		------------------- Can't get the Player Inventory when the Mod Init since the Factorio 1.0 Version -------------------
 		if mfCall(addMobileFactory, player) == true then
 			player.print({"gui-description.initPlayer_AddMFFailed"})
@@ -18,7 +18,7 @@ function Event.initPlayer(event)
 		setPlayerVariable(player.name, "GotInventory", true)
 		if mfCall(GUI.createMFMainGUI, player) == true then
 			player.print({"gui-description.initPlayer_CreateMainGUIFailed"})
-			if global.playersTable[player.name].GUI[_mfGUIName.MainGUI] ~= nil then global.playersTable[player.name].GUI[_mfGUIName.MainGUI] = nil end
+			if storage.playersTable[player.name].GUI[_mfGUIName.MainGUI] ~= nil then storage.playersTable[player.name].GUI[_mfGUIName.MainGUI] = nil end
 			if player.gui.screen[_mfGUIName.MainGUI] ~= nil and player.gui.screen[_mfGUIName.MainGUI].valid == true then
 				player.gui.screen[_mfGUIName.MainGUI].destroy()
 			end
@@ -63,17 +63,19 @@ function Event.tick(event)
 	-- Updates Mobile Factory Lights --
 	if event.tick%_eventTick49 == 0 then updateIndoorLights() end
 	-- Update the Floor Is Lava --
-	if event.tick%_eventTick150 == 0 and global.floorIsLavaActivated == true then updateFloorIsLava() end
+	if event.tick%_eventTick150 == 0 and storage.floorIsLavaActivated == true then updateFloorIsLava() end
 end
 
 -- Watch damages --
 function Event.entityDamaged(event)
-	if event.entity.force.name == "enemy" or event.entity.force.name == "neutral" then return end
-	-- Check the Entity --
+	-- F2: nil/valid check moved before force access to avoid crash on invalid entity
+	-- if event.entity.force.name == "enemy" or event.entity.force.name == "neutral" then return end
+	-- if event.entity == nil or event.entity.valid == false then return end
 	if event.entity == nil or event.entity.valid == false then return end
+	if event.entity.force.name == "enemy" or event.entity.force.name == "neutral" then return end
 	-- Test if this is in the Control Center --
 	if string.match(event.entity.surface.name, _mfControlSurfaceName) then
-		event.entity.health = event.entity.prototype.max_health
+		event.entity.health = event.entity.max_health
 	end
 end
 
@@ -112,8 +114,8 @@ function Event.settingsPasted(event)
 	if event.destination == nil or event.destination.valid == false then return end
 
 	-- Get the Objects --
-	local o1 = global.entsTable[event.source.unit_number] or global.objectsTable[event.source.unit_number]
-	local o2 = global.entsTable[event.destination.unit_number]  or global.objectsTable[event.destination.unit_number]
+	local o1 = storage.entsTable[event.source.unit_number] or storage.objectsTable[event.source.unit_number]
+	local o2 = storage.entsTable[event.destination.unit_number]  or storage.objectsTable[event.destination.unit_number]
 
 	-- Check the Objects --
 	if o1 == nil then return end
@@ -211,7 +213,7 @@ function Event.entityRotated(event)
 		local slotID = nil
 		local slot = nil
 		local dpEnts = nil
-		for _, mf in pairs(global.MFTable) do
+		for _, mf in pairs(storage.MFTable) do
 			for ID, aDPEnts in pairs(mf.deployedEnts) do
 				if aDPEnts.inEntity == ent or aDPEnts.outEntity == ent then
 					dpMF = mf

@@ -50,8 +50,8 @@ end
 -- Destructor --
 function RC:remove()
     -- Destroy the Light --
-    rendering.destroy(self.lightID)
-    rendering.destroy(self.spriteID)
+    rendering_destroy(self.lightID)
+    rendering_destroy(self.spriteID)
     -- Remove from the Update System --
 	UpSys.removeObj(self)
 end
@@ -89,12 +89,12 @@ function RC:update()
         -- Check if there is a Dimensionnal Tile below --
         local tile = self.ent.surface.get_tile(self.ent.position.x, self.ent.position.y)
         if tile ~= nil and tile.valid == true and tile.name == "DimensionalTile" then
-            if game.tile_prototypes[self.resourceName] ~= nil then
+            if prototypes.tile[self.resourceName] ~= nil then
                 -- If this is a Tile --
                 self.ent.surface.set_tiles({{name=self.resourceName, position=self.ent.position}})
                 self.ent.destroy()
                 return
-            elseif game.entity_prototypes[self.resourceName] ~= nil then
+            elseif prototypes.entity[self.resourceName] ~= nil then
                 -- If this is a Resource, check if the Position is valid --
                 if self.ent.surface.can_place_entity{name=self.resourceName, position=self.ent.position} then
                     -- Create the Entity --
@@ -137,17 +137,17 @@ function RC:update()
     end
 
     -- Check the Ressource --
-    if resource ~= nil and (game.tile_prototypes[resource.name] ~= nil or game.entity_prototypes[resource.name] ~= nil) then
+    if resource ~= nil and (prototypes.tile[resource.name] ~= nil or prototypes.entity[resource.name] ~= nil) then
         if game.players[self.player] ~= nil then
             -- Create the Text and remove the Resource (Exept Water) --
             local text = ""
             if isTile == true or resource.amount == nil or resource.amount <= 0 then
                 self.resourceName = resource.name
-                text = {"", game.tile_prototypes[resource.name].localised_name, " ", {"info.Caught"}}
+                text = {"", prototypes.tile[resource.name].localised_name, " ", {"info.Caught"}}
             else
                 self.resourceName = resource.name
                 self.resourceAmount = resource.amount
-                text = {"", resource.amount, " ", game.entity_prototypes[resource.name].localised_name, " ", {"info.Caught"}}
+                text = {"", resource.amount, " ", prototypes.entity[resource.name].localised_name, " ", {"info.Caught"}}
                 resource.destroy()
             end
             game.players[self.player].create_local_flying_text{text=text, position=self.ent.position}
@@ -185,12 +185,12 @@ end
 function RC:contentToItemTags(tags)
     -- Get the Resource Localized Name --
     local locResourceName = ""
-    if game.tile_prototypes[self.resourceName] ~= nil then
+    if prototypes.tile[self.resourceName] ~= nil then
         -- Get the Tile Name --
-        locResourceName = game.tile_prototypes[self.resourceName].localised_name
-    elseif game.entity_prototypes[self.resourceName] ~= nil then
+        locResourceName = prototypes.tile[self.resourceName].localised_name
+    elseif prototypes.entity[self.resourceName] ~= nil then
         -- Get the Resource Name --
-        locResourceName = game.entity_prototypes[self.resourceName].localised_name
+        locResourceName = prototypes.entity[self.resourceName].localised_name
     else
         -- The Prototype doesn't exist anymore --
         return

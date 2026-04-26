@@ -42,8 +42,8 @@ function RCL.new(ent)
 	t.tank = ent.surface.create_entity{name="ResourcesCollectorTank", position=ent.position, force=ent.force}
 
 	-- Save the Object inside the Tables --
-	global.objectsTable[ent.unit_number] = t
-	table.insert(global.ResourceCollectorTable, t)
+	storage.objectsTable[ent.unit_number] = t
+	table.insert(storage.ResourceCollectorTable, t)
 
 	-- Scan all Resources around --
 	RCL.scanResources(t, ent)
@@ -55,7 +55,7 @@ end
 -- Destructor --
 function RCL.remove(obj)
 	-- Destroy the Animation --
-	rendering.destroy(obj.lightAnID or 0)
+	rendering_destroy(obj.lightAnID or 0)
 	-- Destroy the Tank --
 	if obj.tank ~= nil and obj.tank.valid == true then obj.tank.destroy() end
 	-- Remove from the Network Access Point --
@@ -63,10 +63,10 @@ function RCL.remove(obj)
 		obj.networkAccessPoint.objTable[obj.ent.unit_number] = nil
 	end
 	-- Remove from the Objects the Tables --
-	global.objectsTable[obj.entID] = nil
-	for k, rcl in pairs(global.ResourceCollectorTable) do
+	storage.objectsTable[obj.entID] = nil
+	for k, rcl in pairs(storage.ResourceCollectorTable) do
 		if rcl == obj then
-			table.remove(global.ResourceCollectorTable, k)
+			table.remove(storage.ResourceCollectorTable, k)
 		end
 	end
 end
@@ -236,7 +236,7 @@ function RCL.getTooltipInfos(obj, GUITable, mainFrame, justCreated)
 
 				-- Create the Name --
 				if item ~= nil then
-					table.insert(invs, {"", "[img=item/"..item.."] ", game.item_prototypes[item].localised_name, " - ", deepStorage.ID})
+					table.insert(invs, {"", "[img=item/"..item.."] ", prototypes.item[item].localised_name, " - ", deepStorage.ID})
 				else
 					table.insert(invs, {"", "", {"gui-description.Empty"}, " - ", deepStorage.ID})
 				end
@@ -290,7 +290,7 @@ function RCL.getTooltipInfos(obj, GUITable, mainFrame, justCreated)
 
 				-- Create the Name --
 				if fluid ~= nil then
-					table.insert(invs, {"", "[img=fluid/"..fluid.."] ", game.fluid_prototypes[fluid].localised_name, " - ", deepTank.ID})
+					table.insert(invs, {"", "[img=fluid/"..fluid.."] ", prototypes.fluid[fluid].localised_name, " - ", deepTank.ID})
 				else
 					table.insert(invs, {"", "", {"gui-description.Empty"}, " - ", deepTank.ID})
 				end
@@ -328,7 +328,7 @@ function RCL.getTooltipInfos(obj, GUITable, mainFrame, justCreated)
 	GAPI.addProgressBar(GUITable, "", informationTable, "", "", false, _mfPurple, EI.energyLevel(obj)/20, 100)
 
 	-- Create the Speed --
-	local speed = math.floor((math.pow(EI.energyLevel(obj), _mfQuatronScalePower) + _mfOreCleanerResourcesPerExtraction) * EI.energyLevel(obj) * 3)
+	local speed = math.floor(((EI.energyLevel(obj) ^ _mfQuatronScalePower) + _mfOreCleanerResourcesPerExtraction) * EI.energyLevel(obj) * 3)
 	local speedLabel = GAPI.addLabel(GUITable, "", informationTable, {"gui-description.RCLSpeed", speed}, _mfOrange)
 	speedLabel.style.top_margin = 10
 
@@ -379,7 +379,7 @@ function RCL.getTooltipInfos(obj, GUITable, mainFrame, justCreated)
 	if obj.tank ~= nil and obj.tank.fluidbox[1] ~= nil then
 		fluidsName1 = obj.tank.fluidbox[1].name
 		fluidsAmount1 = obj.tank.fluidbox[1].amount
-		fluidsColor1 = game.fluid_prototypes[fluidsName1].base_color
+		fluidsColor1 = prototypes.fluid[fluidsName1].base_color
 		fluidsTT1 = {"", Util.getLocFluidName(fluidsName1), ": ", fluidsAmount1, "/", _mfRCLTankSize}
 	end
 
@@ -387,7 +387,7 @@ function RCL.getTooltipInfos(obj, GUITable, mainFrame, justCreated)
 	if obj.tank ~= nil and obj.tank.fluidbox[2] ~= nil then
 		fluidsName2 = obj.tank.fluidbox[2].name
 		fluidsAmount2 = obj.tank.fluidbox[2].amount
-		fluidsColor2 = game.fluid_prototypes[fluidsName2].base_color
+		fluidsColor2 = prototypes.fluid[fluidsName2].base_color
 		fluidsTT2 = {"", Util.getLocFluidName(fluidsName2), ": ", fluidsAmount2, "/", _mfRCLTankSize}
 	end
 
@@ -395,7 +395,7 @@ function RCL.getTooltipInfos(obj, GUITable, mainFrame, justCreated)
 	if obj.tank ~= nil and obj.tank.fluidbox[3] ~= nil then
 		fluidsName3 = obj.tank.fluidbox[3].name
 		fluidsAmount3 = obj.tank.fluidbox[3].amount
-		fluidsColor3 = game.fluid_prototypes[fluidsName3].base_color
+		fluidsColor3 = prototypes.fluid[fluidsName3].base_color
 		fluidsTT3 = {"", Util.getLocFluidName(fluidsName3), ": ", fluidsAmount3, "/", _mfRCLTankSize}
 	end
 
@@ -403,7 +403,7 @@ function RCL.getTooltipInfos(obj, GUITable, mainFrame, justCreated)
 	if obj.tank ~= nil and obj.tank.fluidbox[4] ~= nil then
 		fluidsName4 = obj.tank.fluidbox[4].name
 		fluidsAmount4 = obj.tank.fluidbox[4].amount
-		fluidsColor4 = game.fluid_prototypes[fluidsName4].base_color
+		fluidsColor4 = prototypes.fluid[fluidsName4].base_color
 		fluidsTT4 = {"", Util.getLocFluidName(fluidsName4), ": ", fluidsAmount4, "/", _mfRCLTankSize}
 	end
 
@@ -478,9 +478,9 @@ function RCL.update(obj)
 
     -- Draw the Animation --
 	if obj.inventoryFull == true or obj.outOfQuatron == true then
-		rendering.destroy(obj.lightAnID or 0)
+		rendering_destroy(obj.lightAnID or 0)
 		obj.lightAnID = nil
-    elseif obj.lightAnID == nil or rendering.is_valid(obj.lightAnID) == false then
+    elseif obj.lightAnID == nil or rendering_is_valid(obj.lightAnID) == false then
         obj.lightAnID = rendering.draw_animation{animation="ResourcesCollectorAn", target=obj.ent.position, surface=obj.ent.surface, render_layer=144, animation_speed=0.3}
     end
 
@@ -515,10 +515,10 @@ function RCL.scanResources(obj, entity)
 		obj.resourcesTable = entity.surface.find_entities_filtered{area=area, type="resource", limit=EI.energyLevel(obj)}
 	elseif obj.collectOres == true and obj.collectFluids == false then
 		-- Collect Ores Only --
-		obj.resourcesTable = entity.surface.find_entities_filtered{area=area, type="resource", name=global.oresTable, limit=EI.energyLevel(obj)}
+		obj.resourcesTable = entity.surface.find_entities_filtered{area=area, type="resource", name=storage.oresTable, limit=EI.energyLevel(obj)}
 	elseif obj.collectOres == false and obj.collectFluids == true then
 		-- Collect Fluids Only --
-		obj.resourcesTable = entity.surface.find_entities_filtered{area=area, type="resource", name=global.fluidsTable, limit=EI.energyLevel(obj)}
+		obj.resourcesTable = entity.surface.find_entities_filtered{area=area, type="resource", name=storage.fluidsTable, limit=EI.energyLevel(obj)}
 	end
 
 end
@@ -530,7 +530,7 @@ function RCL.collectResources(obj)
 	local quatron = EI.energy(obj)
 
     -- Calcule the amount of Resources to extract --
-    local toExtract = math.floor(math.pow(EI.energyLevel(obj), _mfQuatronScalePower) + _mfOreCleanerResourcesPerExtraction)
+    local toExtract = math.floor((EI.energyLevel(obj) ^ _mfQuatronScalePower) + _mfOreCleanerResourcesPerExtraction)
 
     -- Get the Inventory --
     local inv = obj.chest
@@ -562,7 +562,7 @@ function RCL.collectResources(obj)
         -- Itinerate all Products --
         local added = 0
 		local isFluid = false
-        for _, product in pairs(global.ResourcesProductsTable[resourcesPath.name]) do
+        for _, product in pairs(storage.ResourcesProductsTable[resourcesPath.name]) do
 			-- Calculate how many products can be extracted --
 			local amount = product.amount or math.random(product.min, product.max)
 			local inserted = 0
@@ -583,7 +583,7 @@ function RCL.collectResources(obj)
 				-- Register the amount inserted if this is the main Product --
 				added = math.max(inserted, added)
 				-- Create the Projectile --
-				obj.ent.surface.create_entity{name="RCLProjectile:" .. product.name, position=resourcesPath.position, target=obj.ent, speed=0.1, max_range=999, force=obj.ent.force}
+				obj.ent.surface.create_entity{name="RCLProjectile-" .. product.name, position=resourcesPath.position, target=obj.ent, speed=0.1, max_range=999, force=obj.ent.force}
 				obj.inventoryFull = false
 			else
 				obj.inventoryFull = true
@@ -802,7 +802,7 @@ function RCL.interaction(event, MFPlayer)
 	if string.match(event.element.name, "R.C.L.OpenInvButton") then
 		-- Get the Object --
 		local objId = event.element.tags.ID
-		local ent = global.objectsTable[objId].ent
+		local ent = storage.objectsTable[objId].ent
 		if ent ~= nil and ent.valid == true then
 			MFPlayer.ent.opened = ent
 		end
@@ -812,7 +812,7 @@ function RCL.interaction(event, MFPlayer)
 	-- Select Data Network --
 	if string.match(event.element.name, "R.C.L.DNSelect") then
 		local objId = event.element.tags.ID
-		local obj = global.objectsTable[objId]
+		local obj = storage.objectsTable[objId]
 		if obj == nil then return end
 		-- Get the Mobile Factory --
 		local selectedMF = getMF(event.element.items[event.element.selected_index])
@@ -827,7 +827,7 @@ function RCL.interaction(event, MFPlayer)
 	-- Collect Ores --
 	if string.match(event.element.name, "R.C.L.CollectOres") then
 		local objId = event.element.tags.ID
-		local obj = global.objectsTable[objId]
+		local obj = storage.objectsTable[objId]
 		if obj == nil then return end
 		-- Change the Collect Ores Setting --
 		local state = event.element.switch_state == "right" and true or false
@@ -838,7 +838,7 @@ function RCL.interaction(event, MFPlayer)
 	-- Collect Fluids --
 	if string.match(event.element.name, "R.C.L.CollectFluids") then
 		local objId = event.element.tags.ID
-		local obj = global.objectsTable[objId]
+		local obj = storage.objectsTable[objId]
 		if obj == nil then return end
 		-- Change the Collect Fludis Setting --
 		local state = event.element.switch_state == "right" and true or false
@@ -849,7 +849,7 @@ function RCL.interaction(event, MFPlayer)
 	-- Select Deep Storage --
 	if string.match(event.element.name, "R.C.L.TargetDSR") then
 		local objId = event.element.tags.ID
-		local obj = global.objectsTable[objId]
+		local obj = storage.objectsTable[objId]
 		if obj == nil then return end
 		-- Change the Ore Cleaner targeted Deep Storage --
 		RCL.changeDSR(obj, event.element)
@@ -858,7 +858,7 @@ function RCL.interaction(event, MFPlayer)
 	-- Select Deep Tank --
 	if string.match(event.element.name, "R.C.L.TargetDTK") then
 		local objId = event.element.tags.ID
-		local obj = global.objectsTable[objId]
+		local obj = storage.objectsTable[objId]
 		if obj == nil then return end
 		-- Change the Ore Cleaner targeted Deep Storage --
 		RCL.changeDTK(obj, event.element)
@@ -947,7 +947,7 @@ end
 function RCL.createOreBeam(obj, itemName, target)
 	local positionX = obj.ent.position.x + (math.random(-200, 200)/100)
 	local positionY = obj.ent.position.y + (math.random(-200, 200)/100)
-	obj.ent.surface.create_entity{name="RCLProjectile:" .. itemName, position={positionX,positionY}, target=target, speed=0.25, max_range=999, force=obj.ent.force}
+	obj.ent.surface.create_entity{name="RCLProjectile-" .. itemName, position={positionX,positionY}, target=target, speed=0.25, max_range=999, force=obj.ent.force}
 end
 
 -- Add Quatron (Return the amount added) --

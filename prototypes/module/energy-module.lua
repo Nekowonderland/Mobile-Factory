@@ -35,11 +35,10 @@ pMR.energy_required = 3
 pMR.enabled = false
 pMR.ingredients =
     {
-      {"DimensionalWire", 3},
-	  {"DimensionalCircuit", 8}
+      {type="item", name="DimensionalWire", amount=3},
+	  {type="item", name="DimensionalCircuit", amount=8}
     }
-pMR.result = "EnergyPowerModule"
-pMR.result_count = 1
+pMR.results = {{type="item", name="EnergyPowerModule", amount=1}}
 data:extend{pMR}
 
 
@@ -80,11 +79,10 @@ eMR.energy_required = 3
 eMR.enabled = false
 eMR.ingredients =
     {
-      {"DimensionalWire", 3},
-	  {"DimensionalCircuit", 8}
+      {type="item", name="DimensionalWire", amount=3},
+	  {type="item", name="DimensionalCircuit", amount=8}
     }
-eMR.result = "EnergyEfficiencyModule"
-eMR.result_count = 1
+eMR.results = {{type="item", name="EnergyEfficiencyModule", amount=1}}
 data:extend{eMR}
 
 
@@ -125,11 +123,10 @@ fMR.energy_required = 3
 fMR.enabled = false
 fMR.ingredients =
     {
-      {"DimensionalWire", 3},
-	  {"DimensionalCircuit", 8}
+      {type="item", name="DimensionalWire", amount=3},
+	  {type="item", name="DimensionalCircuit", amount=8}
     }
-fMR.result = "EnergyFocusModule"
-fMR.result_count = 1
+fMR.results = {{type="item", name="EnergyFocusModule", amount=1}}
 data:extend{fMR}
 
 

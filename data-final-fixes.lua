@@ -9,10 +9,14 @@ end
 -- Make Dimensional Lab accept all materials --
 if settings.startup["MF-lab-science-packs"].value == "all" then
 	local inputsTable = {}
+	local seen = {}
 	for _, lab in pairs(data.raw.lab) do
 		if lab.inputs then
 			for _, name in pairs(lab.inputs) do
-				inputsTable[name] = name
+				if not seen[name] then
+					seen[name] = true
+					table.insert(inputsTable, name)
+				end
 			end
 		end
 	end
@@ -20,14 +24,15 @@ if settings.startup["MF-lab-science-packs"].value == "all" then
 
 elseif settings.startup["MF-lab-science-packs"].value == "add vanilla" then
 	local inputsTable = {}
+	local seen = {}
 	local basicLab = data.raw.lab.lab
 	local dimLab = data.raw.lab.DimensionalLab
 	if basicLab and basicLab.inputs then
 		for _, name in pairs(dimLab.inputs) do
-			inputsTable[name] = name
+			if not seen[name] then seen[name] = true; table.insert(inputsTable, name) end
 		end
 		for _, name in pairs(basicLab.inputs) do
-			inputsTable[name] = name
+			if not seen[name] then seen[name] = true; table.insert(inputsTable, name) end
 		end
 		dimLab.inputs = inputsTable
 	else
@@ -38,11 +43,12 @@ elseif settings.startup["MF-lab-science-packs"].value == "dimensional only" then
 	-- Do Nothing --
 end
 
--- Space Exploration is breaking all Mobiles Factories Collision Mask, fixing that here --
-if mods["space-exploration"] then
-	log("Fixing Space Exploration Collition Mask")
-	data.raw["simple-entity-with-owner"].MFDeploy.collision_mask = {"player-layer", "train-layer", "consider-tile-transitions", "layer-52", "not-colliding-with-itself", "layer-15"}
-end
+-- Space Exploration compatibility: no longer needed in F2 (SE not compatible with F2)
+-- F2: removed "layer-52" and "layer-15" (Space Exploration specific layers)
+-- if mods["space-exploration"] then
+-- 	log("Fixing Space Exploration Collition Mask")
+-- 	data.raw["simple-entity-with-owner"].MFDeploy.collision_mask = {"player-layer", "train-layer", "consider-tile-transitions", "layer-52", "not-colliding-with-itself", "layer-15"}
+-- end
 
 -- Increate the Stack Size of all Resources --
 for _, resource in pairs(data.raw.resource) do

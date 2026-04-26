@@ -11,7 +11,7 @@ end
 function UpSys.removeObj(obj)
 	-- Remove the Object --
 	if obj.entID then
-		global.entsTable[obj.entID] = nil
+		storage.entsTable[obj.entID] = nil
 	end
 end
 
@@ -19,24 +19,24 @@ end
 function UpSys.scanObjs()
 
   -- Clear the Entities Table --
-  global.entsTable = {}
+  storage.entsTable = {}
 
   -- Clear the Tick Table --
-  for k, _ in pairs(global.upsysTickTable) do
+  for k, _ in pairs(storage.upsysTickTable) do
     if k < game.tick then
-      global.upsysTickTable[k] = nil
+      storage.upsysTickTable[k] = nil
     end
   end
 
   -- Add all Objects to --
-  for _, obj in pairs(global.objTable) do
+  for _, obj in pairs(storage.objTable) do
     if obj.noUpsys ~= true then
-      UpSys.addTable(global[obj.tableName])
+      UpSys.addTable(storage[obj.tableName])
     end
   end
 
   -- Add all Internal Energy Cubes and Internal Quatron Cubes --
-  for _, MF in pairs(global.MFTable) do
+  for _, MF in pairs(storage.MFTable) do
     UpSys.addObject(MF.dataNetwork)
     UpSys.addObject(MF.networkController)
     UpSys.addObject(MF.internalEnergyObj)
@@ -45,18 +45,18 @@ function UpSys.scanObjs()
   end
 
   -- Save the last scan tick --
-  global.upSysLastScan = game.tick
+  storage.upSysLastScan = game.tick
   
 end
 
 -- Update System: Add an Object to the MF Entities Table --
 function UpSys.addObject(obj)
-  if global.upsysTickTable == nil then global.upsysTickTable = {} end
-  if global.entsTable == nil then global.entsTable = {} end
+  if storage.upsysTickTable == nil then storage.upsysTickTable = {} end
+  if storage.entsTable == nil then storage.entsTable = {} end
   -- Check the size of the UpSys Table --
-  if table_size(global.upsysTickTable) > 300 then
+  if table_size(storage.upsysTickTable) > 300 then
     game.print("Mobile Factory - Upsys Error: table size too hight, unable to update Entities")
-	global.upsysTickTable = {}
+	storage.upsysTickTable = {}
     return
   end
   -- Check if the Object is not null --
@@ -67,7 +67,7 @@ function UpSys.addObject(obj)
     else
       -- Add the Object to the Entity Table --
       if obj.ent ~= nil and obj.ent.valid == true then
-        global.entsTable[obj.ent.unit_number] = obj
+        storage.entsTable[obj.ent.unit_number] = obj
       end
       -- Check if the Object has to be updated --
 	  if obj.updateTick > 0 then
@@ -77,16 +77,16 @@ function UpSys.addObject(obj)
           -- Look for the best Tick to update --
           local bestTick = 1
           for i = 1, 60 do
-            if table_size(global.upsysTickTable[game.tick+i] or {}) < table_size(global.upsysTickTable[game.tick+bestTick] or {}) then
+            if table_size(storage.upsysTickTable[game.tick+i] or {}) < table_size(storage.upsysTickTable[game.tick+bestTick] or {}) then
               bestTick = i
-              if global.upsysTickTable[game.tick+i] == nil then
+              if storage.upsysTickTable[game.tick+i] == nil then
                 break
               end
             end
           end
           nextUpdate = game.tick + bestTick 
-          if global.upsysTickTable[nextUpdate] == nil then global.upsysTickTable[nextUpdate] = {} end
-          table.insert(global.upsysTickTable[nextUpdate], obj)
+          if storage.upsysTickTable[nextUpdate] == nil then storage.upsysTickTable[nextUpdate] = {} end
+          table.insert(storage.upsysTickTable[nextUpdate], obj)
           obj.lastUpdate = 1
         end
       end
@@ -112,65 +112,65 @@ end
 -- Update System: Update Entities --
 function UpSys.update(event)
   -- Check all Object --
-  if game.tick - global.upSysLastScan > _mfScanTicks * 10 then
+  if game.tick - storage.upSysLastScan > _mfScanTicks * 10 then
     UpSys.scanObjs()
   end
   -- if true then return end
   -- Check if there are something to update --
-  if global.upsysTickTable[game.tick] == nil then return end
+  if storage.upsysTickTable[game.tick] == nil then return end
   -- Create the updated Index --
   local updated = 1
   -- Update Object --
-  for _, obj in pairs(global.upsysTickTable[game.tick]) do
+  for _, obj in pairs(storage.upsysTickTable[game.tick]) do
     -- If more objects can be updated --
 	if valid(obj) == true and obj.update ~= nil then
-      if updated <= global.entsUpPerTick then
+      if updated <= storage.entsUpPerTick then
         if mfCall(obj.update, obj, event) == true then
           game.print({"gui-description.UpSysupdateEntity_Failed", obj.ent.name})
         end
         updated = updated + 1
-        if global.upsysTickTable[game.tick + obj.updateTick] == nil then
-          global.upsysTickTable[game.tick + obj.updateTick] = {}
+        if storage.upsysTickTable[game.tick + obj.updateTick] == nil then
+          storage.upsysTickTable[game.tick + obj.updateTick] = {}
         end
-        table.insert(global.upsysTickTable[game.tick + obj.updateTick], obj)
+        table.insert(storage.upsysTickTable[game.tick + obj.updateTick], obj)
       -- Else if there are no more update available --
       else
-        if global.upsysTickTable[game.tick+1] == nil then
-          global.upsysTickTable[game.tick+1] = {}
+        if storage.upsysTickTable[game.tick+1] == nil then
+          storage.upsysTickTable[game.tick+1] = {}
         end
-        table.insert(global.upsysTickTable[game.tick+1], obj)
+        table.insert(storage.upsysTickTable[game.tick+1], obj)
       end
     end
   end
   -- Delete the Table --
-  global.upsysTickTable[game.tick] = nil
+  storage.upsysTickTable[game.tick] = nil
 end
 
 -- Index all Erya Structures --
 -- function Erya.indexEryaStructures()
---   global.eryaIndexedTable = {}
+--   storage.eryaIndexedTable = {}
 --   local i = 0
---   for k, es in pairs(global.eryaTable) do
+--   for k, es in pairs(storage.eryaTable) do
 --     i = i + 1
 --     if valid(es) then
---       global.eryaIndexedTable[i] = es
+--       storage.eryaIndexedTable[i] = es
 --     else
---       global.eryaTable[k] = nil
+--       storage.eryaTable[k] = nil
 --     end
 --   end
 -- end
 
 -- function Erya.updateEryaStructures(event)
 --   for i=0, 10 do
---     if global.updateEryaIndex > table_size(global.eryaIndexedTable) then
---       global.updateEryaIndex = 1
+--     if storage.updateEryaIndex > table_size(storage.eryaIndexedTable) then
+--       storage.updateEryaIndex = 1
 --       Erya.indexEryaStructures()
 --       return
 --     end
---     local es = global.eryaIndexedTable[global.updateEryaIndex]
+--     local es = storage.eryaIndexedTable[storage.updateEryaIndex]
 --     if valid(es) == true and es.lastUpdate + es.updateTick < event.tick then
 --       es:update()
 --     end
---     global.updateEryaIndex = global.updateEryaIndex + 1
+--     storage.updateEryaIndex = storage.updateEryaIndex + 1
 --   end
 -- end

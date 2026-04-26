@@ -70,10 +70,10 @@ daR.energy_required = 4
 daR.enabled = false
 daR.ingredients =
     {
-      {"CrystalizedCircuit", 10},
-      {"MachineFrame3", 5}
+      {type="item", name="CrystalizedCircuit", amount=10},
+      {type="item", name="MachineFrame3", amount=5}
     }
-    daR.result = "DataAssembler"
+    daR.results = {{type="item", name="DataAssembler", amount=1}}
 data:extend{daR}
 
 -- Technologie --

@@ -54,8 +54,8 @@ end
 -- Destructor --
 function NAP:remove()
     -- Destroy the Animation and the Area --
-	rendering.destroy(self.animID)
-	rendering.destroy(self.areaRenderID)
+	rendering_destroy(self.animID)
+	rendering_destroy(self.areaRenderID)
 	-- Remove from the Update System --
     UpSys.removeObj(self)
     -- Remove from the Data Network --
@@ -81,19 +81,19 @@ function NAP:update()
 	end
 
 	-- Render the Animation --
-	if EI.energy(self) <= 0 and rendering.is_valid(self.noQuatronSpriteID) == false then
+	if EI.energy(self) <= 0 and rendering_is_valid(self.noQuatronSpriteID) == false then
 		self.noQuatronSpriteID = rendering.draw_sprite{sprite="QuatronIconDisabled", render_layer=131, target=self.ent, surface=self.ent.surface, x_scale=0.25, y_scale=0.25}
-		rendering.destroy(self.animID)
-	elseif EI.energy(self) > 0 and rendering.is_valid(self.animID) == false then
+		rendering_destroy(self.animID)
+	elseif EI.energy(self) > 0 and rendering_is_valid(self.animID) == false then
 		self.animID = rendering.draw_animation{animation="NetworkAccessPointA", target={self.ent.position.x,self.ent.position.y-0.9}, surface=self.ent.surface, render_layer=131}
-		rendering.destroy(self.noQuatronSpriteID)
+		rendering_destroy(self.noQuatronSpriteID)
 	end
 
 	-- Render the Area --
-	if self.showArea == true and rendering.is_valid(self.areaRenderID) == false then
+	if self.showArea == true and rendering_is_valid(self.areaRenderID) == false then
 			self.areaRenderID = rendering.draw_rectangle{color=_mfGreen, width=5, filled=false, left_top={self.ent.position.x-_mfNAPAreaSize, self.ent.position.y-_mfNAPAreaSize}, right_bottom={self.ent.position.x+_mfNAPAreaSize, self.ent.position.y+_mfNAPAreaSize}, surface=self.ent.surface}
 	elseif self.showArea == false then
-			rendering.destroy(self.areaRenderID)
+			rendering_destroy(self.areaRenderID)
 	end
 
 	-- Create the Signals --
@@ -241,7 +241,7 @@ function NAP:updateTotalConsumption()
 			end
 	end
 	-- TODO: NAP doesn't get better with levels, so just reducing consumption for now
-	self.totalConsumption = math.ceil(totalConsumption / math.pow(EI.energyLevel(self), _mfQuatronScalePower))
+	self.totalConsumption = math.ceil(totalConsumption / (EI.energyLevel(self) ^ _mfQuatronScalePower))
 end
 
 -- Remove the Quatron Consumed --
@@ -261,7 +261,7 @@ function NAP.interaction(event)
 	if string.match(event.element.name, "N.A.P.AreaSwitch") then
 		-- Get the Object --
 		local objID = event.element.tags.ID
-		local obj = global.networkAccessPointTable[objID]
+		local obj = storage.networkAccessPointTable[objID]
 		if valid(obj) == false then return end
 		if event.element.switch_state == "left" then
 			obj.showArea = false

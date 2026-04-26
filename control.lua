@@ -46,25 +46,25 @@ function onInit()
 
 	-- Check if mod being initialized for the very first time
 	-- This *need* to be at the very begginng of on_init callback
-	global.allowMigration = ( next(global) ~= nil )
+	storage.allowMigration = ( next(storage) ~= nil )
 
 	-- Update System --
-	global.entsTable = global.entsTable or {}
-	global.upsysTickTable = global.upsysTickTable or {}
-	global.entsUpPerTick = global.entsUpPerTick or _mfBaseUpdatePerTick
-	global.upSysLastScan = global.upSysLastScan or 0
+	storage.entsTable = storage.entsTable or {}
+	storage.upsysTickTable = storage.upsysTickTable or {}
+	storage.entsUpPerTick = storage.entsUpPerTick or _mfBaseUpdatePerTick
+	storage.upSysLastScan = storage.upSysLastScan or 0
 	-- Resource Collector --
-	global.ResourceCollectorTable = global.ResourceCollectorTable or {}
-	global.RCLUpdateIndex = 1
+	storage.ResourceCollectorTable = storage.ResourceCollectorTable or {}
+	storage.RCLUpdateIndex = 1
 	-- Performance
-	global.useVanillaChooseElem = global.useVanillaChooseElem or false
+	storage.useVanillaChooseElem = storage.useVanillaChooseElem or false
 	-- Data Network --
-	global.dataNetworkID = global.dataNetworkID or 0
-	global.dataAssemblerBlacklist = global.dataAssemblerBlacklist or {}
+	storage.dataNetworkID = storage.dataNetworkID or 0
+	storage.dataAssemblerBlacklist = storage.dataAssemblerBlacklist or {}
 	-- Floor Is Lava --
-	global.floorIsLavaActivated = global.floorIsLavaActivated or false
+	storage.floorIsLavaActivated = storage.floorIsLavaActivated or false
 	-- Table of all Objects --
-	global.objectsTable = global.objectsTable or {}
+	storage.objectsTable = storage.objectsTable or {}
 	-- Research --
 	for _, force in pairs(game.forces) do
 		if settings.startup["MF-initial-research-complete"] and settings.startup["MF-initial-research-complete"].value == true then
@@ -75,22 +75,22 @@ function onInit()
 	-- Create the Objects Table --
 	createTableList()
 	-- Migrate all Objects --
-	for _, obj in pairs(global.objTable) do
+	for _, obj in pairs(storage.objTable) do
 		if obj.tableName and obj.tag then
 			if _G[obj.tag].refresh then
-				for _, entry in pairs(global[obj.tableName]) do
+				for _, entry in pairs(storage[obj.tableName]) do
 					entry:refresh()
 				end
 			end
 			if _G[obj.tag].validate then
-				for _, entry in pairs(global[obj.tableName]) do
+				for _, entry in pairs(storage[obj.tableName]) do
 					entry:validate()
 				end
 			end
 		end
 	end
 
-	-- global.syncTile = global.syncTile or "dirt-7"
+	-- storage.syncTile = storage.syncTile or "dirt-7"
 	-- Validate the Tile Used for the Sync Area --
 	-- validateSyncAreaTile()
 	-- Ensure All Needed Tiles are Present --
@@ -101,13 +101,13 @@ function onInit()
 	rendering.clear("Mobile_Factory")
 
 	-- Create all MFPlayers if needed --
-	if global.playersTable == nil then global.playersTable = {} end
+	if storage.playersTable == nil then storage.playersTable = {} end
 	for _, player in pairs(game.players) do
 		Event.initPlayer({player_index = player.index})
 	end
 
 	-- Recreate GUIs --
-	for _, MFPlayer in pairs(global.playersTable or {}) do
+	for _, MFPlayer in pairs(storage.playersTable or {}) do
 		if MFPlayer.ent ~= nil and MFPlayer.ent.valid == true then
 			GUI.createMFMainGUI(MFPlayer.ent)
 		else
@@ -116,29 +116,29 @@ function onInit()
 	end
 
 	-- Validate MF Fuel --
-	global.MFFuel = nil
+	storage.MFFuel = nil
 	local expectedFuels = _MFVehicleFuelsByName
-	local baseMF = game.entity_prototypes["MobileFactory"]
+	local baseMF = prototypes.entity["MobileFactory"]
 	for fuelName in pairs(expectedFuels) do
-		local fuel = game.item_prototypes[fuelName]
+		local fuel = prototypes.item[fuelName]
 		if fuel ~= nil
 			and fuel.fuel_value and fuel.fuel_value > 0
 			and baseMF ~= nil and baseMF.burner_prototype ~= nil
 			and baseMF.burner_prototype.fuel_categories[fuel.fuel_category]
 		then
-			global.MFFuel = fuel
+			storage.MFFuel = fuel
 			_MFVehicleFuelPrototype = fuel
 		end
 	end
 
 	-- Check the Objects Table --
-	for k, obj in pairs(global.objectsTable) do
+	for k, obj in pairs(storage.objectsTable) do
 		if obj.meta ~= nil and _G[obj.meta] ~= nil and _G[obj.meta].valid ~= nil then
 			if _G[obj.meta].valid(obj) == false then
-				global.objectsTable[k] = nil
+				storage.objectsTable[k] = nil
 			end
 		else
-			global.objectsTable[k] = nil
+			storage.objectsTable[k] = nil
 		end
 	end
 
@@ -146,17 +146,18 @@ end
 
 function onLoad(event)
 	-- Rebuild all Objects --
-	for _, obj in pairs(global.objTable) do
+	for _, obj in pairs(storage.objTable) do
 		if obj.tableName ~= nil and obj.tag ~= nil and _G[obj.tag] ~= nil then
-			for _, entry in pairs(global[obj.tableName] or {}) do
+			for _, entry in pairs(storage[obj.tableName] or {}) do
 				_G[obj.tag]:rebuild(entry)
 			end
 		end
 	end
-	_MFVehicleFuelPrototype = global.MFFuel
+	_MFVehicleFuelPrototype = storage.MFFuel
 end
 
 -- Filters --
+-- Used for on_entity_died and on_post_entity_died: exclude purely ambient/enemy entities
 _mfEntityFilter = {
 	{filter = "type", type = "unit", invert = true},
 	{filter = "type", type = "tree", mode = "and", invert = true},
@@ -166,13 +167,18 @@ _mfEntityFilter = {
 	{filter = "type", type = "fish", mode = "and", invert = true}
 }
 
-_mfEntityFilterWithCBJ = {
+-- Used for on_entity_damaged: identical scope to _mfEntityFilter
+-- F2: was a copy of _mfEntityFilter (likely leftover from a planned extension)
+_mfEntityFilterWithCBJ = _mfEntityFilter
+
+-- F2 (6.2): filter for build/place/mine events – exclude entity types MF never handles
+_mfBuildRemoveFilter = {
 	{filter = "type", type = "unit", invert = true},
 	{filter = "type", type = "tree", mode = "and", invert = true},
-	{filter = "type", type = "simple-entity", mode = "and", invert = true},
 	{filter = "type", type = "unit-spawner", mode = "and", invert = true},
-	{filter = "type", type = "turret", mode = "and", invert = true},
-	{filter = "type", type = "fish", mode = "and", invert = true}
+	{filter = "type", type = "fish", mode = "and", invert = true},
+	{filter = "type", type = "projectile", mode = "and", invert = true},
+	{filter = "type", type = "particle", mode = "and", invert = true}
 }
 
 -- When a player join the game --
@@ -319,18 +325,19 @@ script.on_event(defines.events.on_player_joined_game, initAPlayer)
 script.on_event(defines.events.on_player_driving_changed_state, onPlayerDriveStatChange)
 script.on_event(defines.events.on_tick, onTick)
 script.on_event(defines.events.on_entity_damaged, onEntityDamaged, _mfEntityFilterWithCBJ)
-script.on_event(defines.events.on_built_entity, whenSomethingWasPlaced)
+-- F2 (6.2): _mfBuildRemoveFilter added to entity events to skip irrelevant types
+script.on_event(defines.events.on_built_entity, whenSomethingWasPlaced, _mfBuildRemoveFilter)
 script.on_event(defines.events.on_player_built_tile, whenSomethingWasPlaced)
-script.on_event(defines.events.script_raised_built, whenSomethingWasPlaced)
-script.on_event(defines.events.script_raised_revive, whenSomethingWasPlaced)
-script.on_event(defines.events.on_robot_built_entity, whenSomethingWasPlaced)
+script.on_event(defines.events.script_raised_built, whenSomethingWasPlaced, _mfBuildRemoveFilter)
+script.on_event(defines.events.script_raised_revive, whenSomethingWasPlaced, _mfBuildRemoveFilter)
+script.on_event(defines.events.on_robot_built_entity, whenSomethingWasPlaced, _mfBuildRemoveFilter)
 script.on_event(defines.events.on_robot_built_tile, whenSomethingWasPlaced)
-script.on_event(defines.events.on_entity_cloned, whenSomethingWasCloned)
-script.on_event(defines.events.on_player_mined_entity, whenSomethingWasRemoved)
+script.on_event(defines.events.on_entity_cloned, whenSomethingWasCloned, _mfBuildRemoveFilter)
+script.on_event(defines.events.on_player_mined_entity, whenSomethingWasRemoved, _mfBuildRemoveFilter)
 script.on_event(defines.events.on_player_mined_tile, whenSomethingWasRemoved)
-script.on_event(defines.events.on_robot_mined_entity, whenSomethingWasRemoved)
+script.on_event(defines.events.on_robot_mined_entity, whenSomethingWasRemoved, _mfBuildRemoveFilter)
 script.on_event(defines.events.on_robot_mined_tile, whenSomethingWasRemoved)
-script.on_event(defines.events.script_raised_destroy, whenSomethingWasRemoved)
+script.on_event(defines.events.script_raised_destroy, whenSomethingWasRemoved, _mfBuildRemoveFilter)
 script.on_event(defines.events.on_entity_died, whenSomethingWasRemoved, _mfEntityFilter)
 script.on_event(defines.events.on_post_entity_died, onGhostPlacedByDie, _mfEntityFilter)
 script.on_event(defines.events.on_gui_opened, onGuiOpened)

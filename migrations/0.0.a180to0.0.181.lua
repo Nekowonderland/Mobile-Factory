@@ -1,6 +1,6 @@
-if global.allowMigration == false then return end
+if storage.allowMigration == false then return end
 -- Create the Jump Drive Object --
-for k, mf in pairs(global.MFTable or {}) do
+for k, mf in pairs(storage.MFTable or {}) do
     mf.jumpDriveObj = JD:new(mf)
     -- Removing old unused Variables --
     mf.jumpTimer = nil
@@ -9,4 +9,4 @@ for k, mf in pairs(global.MFTable or {}) do
 end
 
 -- Removing old unused Variables --
-global.insertedMFInsideInventory = nil
+storage.insertedMFInsideInventory = nil

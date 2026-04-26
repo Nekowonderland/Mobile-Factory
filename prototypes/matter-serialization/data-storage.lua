@@ -70,10 +70,10 @@ dsR.energy_required = 4
 dsR.enabled = false
 dsR.ingredients =
     {
-      {"CrystalizedCircuit", 20},
-      {"MachineFrame3", 5}
+      {type="item", name="CrystalizedCircuit", amount=20},
+      {type="item", name="MachineFrame3", amount=5}
     }
-dsR.result = "DataStorage"
+dsR.results = {{type="item", name="DataStorage", amount=1}}
 data:extend{dsR}
 
 -- Animation --

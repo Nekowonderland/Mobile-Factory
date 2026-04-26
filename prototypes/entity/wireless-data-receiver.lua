@@ -76,10 +76,10 @@ wdrR.energy_required = 5
 wdrR.enabled = false
 wdrR.ingredients =
     {
-      {"CrystalizedCircuit", 10},
-      {"MachineFrame3", 3}
+      {type="item", name="CrystalizedCircuit", amount=10},
+      {type="item", name="MachineFrame3", amount=3}
     }
-wdrR.result = "WirelessDataReceiver"
+wdrR.results = {{type="item", name="WirelessDataReceiver", amount=1}}
 data:extend{wdrR}
 
 -- Animation --

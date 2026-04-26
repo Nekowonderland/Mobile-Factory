@@ -31,7 +31,7 @@ dS.pictures =
             scale = 1
         },
         {
-            filename = "__base__/graphics/entity/substation/hr-substation-shadow.png",
+            filename = "__base__/graphics/entity/substation/substation-shadow.png",
             priority = "high",
             width = 370,
             height = 104,

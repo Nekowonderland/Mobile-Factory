@@ -1,16 +1,16 @@
-if global.allowMigration == false then return end
-for id, obj in pairs(global.deepStorageTable or {}) do
+if storage.allowMigration == false then return end
+for id, obj in pairs(storage.deepStorageTable or {}) do
 	obj.entID = id
 end
-for id, obj in pairs(global.deepTankTable or {}) do
+for id, obj in pairs(storage.deepTankTable or {}) do
 	obj.entID = id
 end
-for id, obj in pairs(global.fluidExtractorTable or {}) do
+for id, obj in pairs(storage.fluidExtractorTable or {}) do
 	obj.entID = id
 end
-for id, obj in pairs(global.networkAccessPointTable or {}) do
+for id, obj in pairs(storage.networkAccessPointTable or {}) do
 	obj.entID = id
 end
-for id, obj in pairs(global.oreCleanerTable or {}) do
+for id, obj in pairs(storage.oreCleanerTable or {}) do
 	obj.entID = id
 end

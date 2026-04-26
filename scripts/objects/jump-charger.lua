@@ -40,7 +40,7 @@ end
 -- Destructor --
 function JC:remove()
     -- Destroy the Light --
-    rendering.destroy(self.lightID)
+    rendering_destroy(self.lightID)
     -- Remove from the Jump Drive Table --
     self.MF.jumpDriveObj.jumpChargerTable[self.ent.unit_number] = nil
     -- Remove from the Update System --

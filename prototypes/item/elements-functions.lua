@@ -7,7 +7,7 @@ function createElement(name, atNumber, type, color,fuelValue)
 	eI.type = type
 	eI.icon = "__Mobile_Factory_Graphics__/graphics/elements/" .. name .. ".png"
 	eI.icon_size = 64
-	eI.order = tonumber(atNumber)
+	eI.order = tostring(atNumber)
 	if atNumber > 0 then
 		eI.subgroup = "Elements"
 	else

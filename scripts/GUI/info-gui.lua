@@ -163,8 +163,8 @@ function GUI.updateMFInfos(GUITable)
 
 	if MF.ent ~= nil and MF.ent.valid == true then
 		mfPositionText = {"", {"gui-description.mfPosition"}, ": [color=yellow](", math.floor(MF.ent.position.x), " ; ", math.floor(MF.ent.position.y), ")  ", MF.ent.surface.name, "[/color]"}
-		mfHealthValue = MF.ent.health / MF.ent.prototype.max_health
-		mfHealthText = {"", {"gui-description.mfHealth"}, ": [color=yellow]", math.floor(MF.ent.health), "/", MF.ent.prototype.max_health, "[/color]"}
+		mfHealthValue = MF.ent.health / MF.ent.max_health
+		mfHealthText = {"", {"gui-description.mfHealth"}, ": [color=yellow]", math.floor(MF.ent.health), "/", MF.ent.max_health, "[/color]"}
 		mfShielValue = 0
 		mfShieldText = {"", {"gui-description.mfShield"}, ": [color=yellow]", 0, "[/color]"}
 		if MF:maxShield() > 0 then
@@ -268,8 +268,8 @@ function GUI.updateDeepTankFrame(GUITable)
 		local frame = GAPI.addFrame(GUITable, "", tankTable, "horizontal")
 
 		-- Create the Button --
-		if DTK.inventoryFluid ~= nil and game.fluid_prototypes[DTK.inventoryFluid] ~= nil then
-			color = game.fluid_prototypes[DTK.inventoryFluid].base_color
+		if DTK.inventoryFluid ~= nil and prototypes.fluid[DTK.inventoryFluid] ~= nil then
+			color = prototypes.fluid[DTK.inventoryFluid].base_color
 		end
 		local buttonText = {"", {"gui-description.FilterSelect"}, "\n", {"gui-description.Filter"}, ": [color=purple]", (Util.getLocFluidName(DTK.filter) or {"gui-description.None"}), "[/color]" }
 		local button = GAPI.addFilter(GUITable, "Inf.GUI.DTFilter", frame, buttonText, true, "fluid", 50, {ID=DTK.ent.unit_number})
@@ -429,7 +429,7 @@ function GUI.infoGUIInteraction(event, player, MFPlayer)
 		if MFPlayer.GUI[_mfGUIName.InfoGUI] ~= nil then
 			MFPlayer.GUI[_mfGUIName.InfoGUI].vars.freezeTankGUI = true
 		end
-		local DTK = global.deepTankTable[event.element.tags.ID]
+		local DTK = storage.deepTankTable[event.element.tags.ID]
 		if valid(DTK) == false then return end
 		if event.element.elem_value ~= nil then
 			DTK.filter = event.element.elem_value
@@ -444,7 +444,7 @@ function GUI.infoGUIInteraction(event, player, MFPlayer)
 		if MFPlayer.GUI[_mfGUIName.InfoGUI] ~= nil then
 			MFPlayer.GUI[_mfGUIName.InfoGUI].vars.freezeStorageGUI = true
 		end
-		local DSR = global.deepStorageTable[event.element.tags.ID]
+		local DSR = storage.deepStorageTable[event.element.tags.ID]
 		if valid(DSR) == false then return end
 		if event.element.elem_value ~= nil then
 			DSR.filter = event.element.elem_value

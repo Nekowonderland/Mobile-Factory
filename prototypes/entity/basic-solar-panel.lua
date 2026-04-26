@@ -22,7 +22,7 @@ bspE.picture =
       layers =
       {
         {
-            filename = "__base__/graphics/entity/solar-panel/hr-solar-panel.png",
+            filename = "__base__/graphics/entity/solar-panel/solar-panel.png",
             priority = "high",
             width = 230,
             height = 224,
@@ -30,7 +30,7 @@ bspE.picture =
             scale = 0.5/3
         },
         {
-            filename = "__base__/graphics/entity/solar-panel/hr-solar-panel-shadow.png",
+            filename = "__base__/graphics/entity/solar-panel/solar-panel-shadow.png",
             priority = "high",
             width = 220,
             height = 180,
@@ -45,7 +45,7 @@ bspE.overlay =
       layers =
       {
         {
-            filename = "__base__/graphics/entity/solar-panel/hr-solar-panel-shadow-overlay.png",
+            filename = "__base__/graphics/entity/solar-panel/solar-panel-shadow-overlay.png",
             priority = "high",
             width = 214,
             height = 180,
@@ -78,7 +78,7 @@ bspR.enabled = false
 bspR.energy_required = 10
 bspR.ingredients =
     {
-      {"MachineFrame", 8}
+      {type="item", name="MachineFrame", amount=8}
     }
-bspR.result = "BasicSolarPanel"
+bspR.results = {{type="item", name="BasicSolarPanel", amount=1}}
 data:extend{bspR}

@@ -21,10 +21,10 @@ local Profiler =
 	IsRunning = false,
 }
 
-local ignoredFunctions =
-{
-	[debug.sethook] = true
-}
+local ignoredFunctions = {}
+if debug.sethook then
+	ignoredFunctions[debug.sethook] = true
+end
 
 local namedSources =
 {

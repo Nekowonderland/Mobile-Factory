@@ -1,6 +1,6 @@
-if global.allowMigration == false then return end
+if storage.allowMigration == false then return end
 
-for _, obj in pairs(global.entsTable or {}) do
+for _, obj in pairs(storage.entsTable or {}) do
   if obj.ent ~= nil and obj.ent.valid == true then
     if obj.quatronCharge ~= obj.quatronCharge then
         obj.quatronCharge = 0

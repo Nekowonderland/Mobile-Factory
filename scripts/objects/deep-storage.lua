@@ -27,7 +27,7 @@ function DSR:new(object)
 	t.player = object.last_user.name
 	t.MF = getMFBySurface(object.surface)
 	t.entID = object.unit_number
-	t.ID = getEntID(global.deepStorageTable)
+	t.ID = getEntID(storage.deepStorageTable)
 	t.MF.dataNetwork.DSRTable[object.unit_number] = t
 	UpSys.addObj(t)
 	return t
@@ -236,13 +236,13 @@ end
 -- Check stored data, and remove invalid record
 function DSR:validate()
 	-- Remove the Item if it doesn't exist anymore --
-	if self.inventoryItem ~= nil and game.item_prototypes[self.inventoryItem] == nil then
+	if self.inventoryItem ~= nil and prototypes.item[self.inventoryItem] == nil then
 		self.inventoryItem = nil
 		self.inventoryCount = 0
 	end
 
 	-- Remove the Item Filter if it doesn't exist anymore --
-	if self.filter ~= nil and game.item_prototypes[self.filter] == nil then
+	if self.filter ~= nil and prototypes.item[self.filter] == nil then
 		self.filter = nil
 	end
 end
@@ -252,7 +252,7 @@ function DSR.interaction(event)
 	-- If this is a Deep Storage Filter --
 	if string.match(event.element.name, "D.S.R.Filter") then
 		local id = event.element.tags.ID
-		local deepStorage = global.deepStorageTable[id]
+		local deepStorage = storage.deepStorageTable[id]
 		if deepStorage == nil then return end
 		if event.element.elem_value ~= nil then
 			deepStorage.filter = event.element.elem_value
@@ -268,7 +268,7 @@ function DSR.interaction(event)
 	-- If this is a Max Textfield --
 	if string.match(event.element.name, "D.S.R.Max") then
 		local id = event.element.tags.ID
-		local deepStorage = global.deepStorageTable[id]
+		local deepStorage = storage.deepStorageTable[id]
 		if deepStorage == nil then return end
 		if event.element.text ~= nil and event.element.text ~= "" and event.element.text ~= "0" then
 			deepStorage.max = tonumber(event.element.text)

@@ -195,12 +195,13 @@ function GUI.updateOptionGUIGameTab(GUITable)
 
 	-- Add Floor Is Lava Option --
 	GAPI.addSubtitle(GUITable, "", flow, {"gui-description.GameTabGeneral"})
-	local FILOption = GAPI.addCheckBox(GUITable, "Opt.GUI.FloorIsLavaOpt", flow, {"gui-description.FloorIsLavaOpt"}, {"gui-description.FloorIsLavaOptTT"}, global.floorIsLavaActivated or false)
+	local FILOption = GAPI.addCheckBox(GUITable, "Opt.GUI.FloorIsLavaOpt", flow, {"gui-description.FloorIsLavaOpt"}, {"gui-description.FloorIsLavaOptTT"}, storage.floorIsLavaActivated or false)
 	FILOption.enabled = MFPlayer.ent.admin
 
 	-- Create the Category List --
 	local categoryList = {}
-	for _, recipe in pairs(game.recipe_prototypes) do
+	-- F2: game.recipe_prototypes → prototypes.recipe
+	for _, recipe in pairs(prototypes.recipe) do
 		categoryList[recipe.category] = recipe.category
 	end
 
@@ -219,7 +220,7 @@ function GUI.updateOptionGUIGameTab(GUITable)
 
 	-- Add the Blacklisted Categories list --
 	local blackListText = ""
-	for category, _ in pairs(global.dataAssemblerBlacklist) do
+	for category, _ in pairs(storage.dataAssemblerBlacklist) do
 		blackListText = blackListText .. " - " .. category
 	end
 	local blackListLable = GAPI.addLabel(GUITable, "", flow, blackListText, _mfRed)
@@ -242,12 +243,12 @@ function GUI.updateOptionGUISystemTab(GUITable)
 	-- Add Performances Options --
 	GAPI.addSubtitle(GUITable, "", flow, {"gui-description.PerfOpt"})
 	GAPI.addLabel(GUITable, "", flow, {"gui-description.SystemPerfEntsPerTick"}, nil, {"gui-description.SystemPerfEntsPerTickTT"}, false, nil, _mfLabelType.yellowTitle)
-	local tickTextField = GAPI.addTextField(GUITable, "Opt.GUI.UpdatePerTickOpt", flow, global.entsUpPerTick or 100, nil, true, true, false, false)
+	local tickTextField = GAPI.addTextField(GUITable, "Opt.GUI.UpdatePerTickOpt", flow, storage.entsUpPerTick or 100, nil, true, true, false, false)
 	tickTextField.enabled = MFPlayer.ent.admin
 
 	-- Ad the Option to use the Vanilla Recipe Selector inside the Data Assembler --
 	GAPI.addLabel(GUITable, "", flow, {"gui-description.UseVanillaRecipeLabel"}, nil, "", false, nil, _mfLabelType.yellowTitle)
-	local DAcheckbox = GAPI.addCheckBox(GUITable, "Opt.GUI.UseVanillaRecipeSelector", flow, {"gui-description.UseVanillaChooseElem"}, {"gui-description.UseVanillaChooseElemTT"}, global.useVanillaChooseElem)
+	local DAcheckbox = GAPI.addCheckBox(GUITable, "Opt.GUI.UseVanillaRecipeSelector", flow, {"gui-description.UseVanillaChooseElem"}, {"gui-description.UseVanillaChooseElemTT"}, storage.useVanillaChooseElem)
 	DAcheckbox.enabled = MFPlayer.ent.admin
 
 	-- Add the Erya Tech Debug Option --
